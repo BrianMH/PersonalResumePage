@@ -1,0 +1,19 @@
+import SideNavBar from "@/components/side-resume-navigation";
+
+/**
+ * The resume page is special as it requires a special navigation bar on the left to allow for much easier navigation in
+ * the page. These have been logically grouped into this particular section
+ */
+export default async function SideNavigationLayout( { children } : Readonly<{ children : React.ReactNode }>) {
+    return (
+        <div className="flex-1 flex flex-col lg:flex-row">
+            <div className="flex flex-row lg:flex-col justify-center align-middle">
+                <SideNavBar />
+            </div>
+
+            <div className="flex-1 flex flex-col bg-background m-6 p-6 shadow-md">
+                {children}
+            </div>
+        </div>
+    )
+}
