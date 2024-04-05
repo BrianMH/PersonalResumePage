@@ -11,7 +11,7 @@ export default async function SideNavigationLayout( { children } : Readonly<{ ch
                 <SideNavBar />
             </div>
 
-            <div className="flex-1 flex flex-col bg-background m-6 p-6 shadow-md">
+            <div className="relative flex-1 flex flex-col m-6 p-6">
                 {children}
             </div>
         </div>

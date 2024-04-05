@@ -23,7 +23,7 @@ export default function SideNavBar() {
     const pathName = usePathname();
 
     return (
-        <div className="flex flex-row lg:flex-col shadow-xl mt-6 ml-0 lg:mt-0 lg:ml-6 bg-background gap-1">
+        <div className="flex flex-row lg:flex-col mt-6 ml-0 lg:mt-0 lg:ml-6 bg-background gap-1">
             {resumeComponents.map(component => {
                 const ComponentIcon = component.icon;
 
