@@ -2,11 +2,12 @@
  * Contains a picture of the resume owner along with some connections available to select.
  */
 import Image from "next/image";
-import {GithubIcon, LinkedinIcon, MailIcon, MapPinIcon} from "lucide-react";
+import {DownloadIcon, GithubIcon, LinkedinIcon, MailIcon, MapPinIcon} from "lucide-react";
 import {Separator} from "@/components/ui/separator";
 import Link from "next/link";
 import {Button} from "@/components/ui/button";
 import {clsx} from "clsx";
+import {RESUME_PATH} from "@/lib/consts";
 
 const referenceComponents = [
     {name: "Brian Henriquez", href: "https://linkedin.com", icon: LinkedinIcon},
@@ -16,6 +17,9 @@ const referenceComponents = [
 ]
 
 export default function IdentityCard() {
+    // declare our resume file path
+    const resumePath = process.env.AWS_CLOUDFRONT_SERVE_ORIGIN + RESUME_PATH;
+
     return (
         <div className="w-[24vw] min-w-fit min-h-fit flex flex-col justify-center align-middle z-10">
             {/*  For the identity part, we would like a smaller card on the left that looks like it's "floating" */}
@@ -72,8 +76,11 @@ export default function IdentityCard() {
 
                     {/*At the very bottom we would like to have a button to allow users to download a resume*/}
                     <div className="relative flex flex-row align-middle justify-center">
-                        <Button>
-                            Download Resume
+                        <Button asChild>
+                            <div className="flex flex-row">
+                                <DownloadIcon className="h-4 pr-2 "/>
+                                <a href={resumePath} target="_blank">Download Resume</a>
+                            </div>
                         </Button>
                     </div>
                 </div>
