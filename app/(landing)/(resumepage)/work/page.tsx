@@ -5,8 +5,8 @@
 
 export default function WorkPage() {
     return (
-        <>
+        <div className="bg-card p-6 flex-1">
             This is the work page content!
-        </>
+        </div>
     )
 }

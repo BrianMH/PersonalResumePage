@@ -10,7 +10,9 @@ import SkillInformationCard from "@/components/front-page-info-card";
 export default function Home() {
   return (
     <div className="flex-1 min-w-screen flex flex-col gap-6 lg:flex-row lg:gap-0">
-        <IdentityCard />
+        <div className="z-10 flex flex-row align-middle justify-center lg:flex-none">
+            <IdentityCard />
+        </div>
         <SkillInformationCard />
     </div>
   );

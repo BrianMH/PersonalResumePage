@@ -15,8 +15,8 @@ import {
 
 const resumeComponents = [
     {name: "About", description: "Basic Info", href: "/", icon: UserRoundIcon},
-    {name: "Work", description: "Prior Work", href: "/work", icon: BriefcaseBusinessIcon},
-    {name: "Projects", description: "Prior Experience", href: "/projects", icon: GanttChartIcon},
+    {name: "Experience", description: "Prior Experiences", href: "/work", icon: BriefcaseBusinessIcon},
+    {name: "Projects", description: "Prior/Current Projects", href: "/projects", icon: GanttChartIcon},
 ]
 
 export default function SideNavBar() {

@@ -4,7 +4,6 @@
 import {Separator} from "@/components/ui/separator";
 import {fetchSoftSkills, fetchTechnicalSkills} from "@/lib/data";
 import {Slider} from "@/components/ui/slider";
-import {cn} from "@/lib/utils";
 
 export default async function SkillInformationCard() {
     // first get our data
@@ -18,7 +17,7 @@ export default async function SkillInformationCard() {
                 About Me
             </p>
 
-            <p className="text-sm">
+            <p className="text-sm pt-3">
                 I am an Electrical Engineering MS graduate with varied experiences in software and hardware. My
                 prior experiences highlight this diverse background with an emphasis in project management, technical
                 learning, and innovative problem solving. When combined with my technical background in machine learning

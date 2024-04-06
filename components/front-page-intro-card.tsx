@@ -23,7 +23,7 @@ export default function IdentityCard() {
                 {/* Image div */}
                 <div className="relative w-full flex flex-row align-middle justify-center">
                     <Image
-                        src="https://avatars.githubusercontent.com/u/10258269?v=4"
+                        src="https://d3qc9p8qvz70tt.cloudfront.net/static/avatar.png"
                         width={200}
                         height={200}
                         alt="profile picture"
