@@ -13,29 +13,10 @@ import {
     NavigationMenuTrigger,
     navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
+import {ProjectBrief} from "@/lib/definitions";
 
-const components = [
-    {
-        title: "Example #1",
-        href: "/projects/1",
-        description:
-            "An introduction to what this project (1) was about",
-    },
-    {
-        title: "Example #2",
-        href: "/projects/2",
-        description:
-            "An introduction to what this project (2) was about",
-    },
-    {
-        title: "Example #3",
-        href: "/projects/3",
-        description:
-            "An introduction to what this project (3) was about",
-    },
-]
 
-export default function NavigationMenuDemo() {
+export default function NavigationMenuDemo({ projBriefs } : { projBriefs : ProjectBrief[] } ) {
     return (
         <NavigationMenu>
             <NavigationMenuList>
@@ -51,11 +32,11 @@ export default function NavigationMenuDemo() {
                     <NavigationMenuTrigger>Projects</NavigationMenuTrigger>
                     <NavigationMenuContent>
                         <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] lg:w-[600px] ">
-                            {components.map((component) => (
+                            {projBriefs.map((component) => (
                                 <ListItem
                                     key={component.title}
                                     title={component.title}
-                                    href={component.href}
+                                    href={`/project/${component.id}`}
                                 >
                                     {component.description}
                                 </ListItem>

@@ -6,10 +6,10 @@
  * document-based approach is likely to be the relevant consideration here.
  */
 
-export default async function SpecificProjectPage({ searchParams } : { searchParams : { id : string }}) {
+export default async function SpecificProjectPage({ params } : { params : { id : string } }) {
     return (
         <>
-            This is a reference to project page {searchParams.id}!
+            This is a reference to project page {params.id}!
         </>
     )
 }
