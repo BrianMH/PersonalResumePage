@@ -2,11 +2,13 @@
  * Some dummy data to have information stored in lieu of a database. This will eventually get moved once a control panel
  * gets implemented on the site (after middleware access is used)
  */
-import {EducationEntry, GuageValue, ProjectBrief} from "@/lib/definitions";
+import {EducationEntry, ExperienceEntry, GaugeValue, ProjectBrief} from "@/lib/definitions";
 
-export const DummyTechnicalGuageData : GuageValue[] = [
+export const DummyTechnicalGuageData : GaugeValue[] = [
     {id: "0", name: "Python", barVal: 90},
     {id: "1", name: "Java", barVal: 85},
+    {id: "8", name: "Deep Learning", barVal: 85},
+    {id: "9", name: "Data Analysis", barVal: 80},
     {id: "2", name: "Typescript", barVal: 80},
     {id: "3", name: "Next.JS", barVal: 70},
     {id: "4", name: "Spring Framework", barVal: 75},
@@ -15,7 +17,7 @@ export const DummyTechnicalGuageData : GuageValue[] = [
     {id: "7", name: "AWS", barVal: 75}
 ]
 
-export const DummySoftSkillData : GuageValue[] = [
+export const DummySoftSkillData : GaugeValue[] = [
     {id: "0", name: "Project Management", barVal: 95},
     {id: "1", name: "Documentation", barVal: 85},
     {id: "2", name: "Communication", barVal: 95},
@@ -89,4 +91,61 @@ export const DummyEducationEntries: EducationEntry[] = [
                 "Data Structures", "Data Analysis", "Java", "Git", "Project Management", "Computer Vision"]
         },
     },
+]
+
+export const DummyExperienceEntries: ExperienceEntry[] = [
+    {
+        id: "1",
+        jobTitle: "Student Research Intern",
+        jobLocation: "University of California - San Diego",
+        jobTimeStart: "Aug '18",
+        jobTimeEnd: "Sep '18",
+        jobType: "Research",
+        description: {
+            bullets: [
+                {id: "1", text: "Designed control scheme and software GUI interface for snake-like colonoscopy robot prototype using Python and MATLAB"},
+                {id: "2", text: "Tripled robot sensor polling rate by improving on the ARM C-based implementation"},
+                {id: "3", text: "Assisted in data collection of robot performance, wrote journal paper drafts, and presented on an MVP publicly"},
+            ],
+        },
+    },
+    {
+        id: "2",
+        jobTitle: "Makerspace Tutor",
+        jobLocation: "University of California - San Diego",
+        jobTimeStart: "Sep '17",
+        jobTimeEnd: "Sep '19",
+        jobType: "Contract",
+        description: {
+            bullets: [
+                {id: "1", text: "Increased student course enrollment by re-structuring the face recognition project to expand on" +
+                        "theoretical underpinnings and modifying it to use up-to-date APIs"},
+                {id: "2", text: "Mentored several student software development teams simultaneously and functioned as a domain expert and " +
+                        "scrum leader, ensuring deadlines were met and goals were feasible"},
+                {id: "3", text: "Created student resources & documentation for multiple in-development projects to slowly introduce to the course"},
+                {id: "4", text: "Researched and implemented minimum viable products for prospective course project ideas in a team of four"},
+            ],
+            references: [
+                {id: "1", type: "Website", description: "Course Site", href: "https://pib.ucsd.edu/"},
+                {id: "2", type: "Project", description: "Project Page", href: "https://sites.google.com/view/ece-196/face-recognition"},
+                {id: "3", type: "Github", description: "Course Github", href: "https://github.com/ProjectInABox"},
+            ]
+        }
+    },
+    {
+        id: "3",
+        jobTitle: "Teaching Assistant",
+        jobLocation: "University of California - San Diego",
+        jobTimeStart: "Jul '19",
+        jobTimeEnd: "Sep '19",
+        jobType: "Contract",
+        description: {
+            bullets: [
+                {id: "1", text: "Engaged in one-on-ones with students during lab sections and office hours sections to futther knowledge of common" +
+                        "circuit systems and their issues"},
+                {id: "2", text: "Increased student course satisfaction by holding discussion sections that involved difficult-to-solve circuit systems" +
+                        "and a more interactive environment"},
+            ]
+        }
+    }
 ]

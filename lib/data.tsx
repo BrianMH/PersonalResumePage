@@ -1,12 +1,18 @@
 'use server';
-import {EducationEntry, GuageValue, ProjectBrief} from "@/lib/definitions";
-import {DummyEducationEntries, DummyProjectBriefs, DummySoftSkillData, DummyTechnicalGuageData} from "@/lib/dummyData";
+import {EducationEntry, ExperienceEntry, GaugeValue, ProjectBrief} from "@/lib/definitions";
+import {
+    DummyEducationEntries,
+    DummyExperienceEntries,
+    DummyProjectBriefs,
+    DummySoftSkillData,
+    DummyTechnicalGuageData
+} from "@/lib/dummyData";
 
 /**
  * This is where all the database retrievals will happen.
  */
 
-export async function fetchTechnicalSkills() : Promise<GuageValue[]> {
+export async function fetchTechnicalSkills() : Promise<GaugeValue[]> {
     // first load our data via a fetch operation
     const skillData = Promise.resolve(DummyTechnicalGuageData);
 
@@ -14,7 +20,7 @@ export async function fetchTechnicalSkills() : Promise<GuageValue[]> {
     return skillData;
 }
 
-export async function fetchSoftSkills() : Promise<GuageValue[]> {
+export async function fetchSoftSkills() : Promise<GaugeValue[]> {
     // first load in our data
     const skillData = Promise.resolve(DummySoftSkillData);
 
@@ -36,4 +42,12 @@ export async function fetchEducationEntries() : Promise<EducationEntry[]> {
 
     // and return it
     return eduData;
+}
+
+export async function fetchExperienceEntries() : Promise<ExperienceEntry[]> {
+    // first load in data
+    const expData = Promise.resolve(DummyExperienceEntries);
+
+    // and return it
+    return expData;
 }

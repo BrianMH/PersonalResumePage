@@ -6,7 +6,7 @@
  * A representation of a "scale" that's used to measure the knowledge associated with a given technical or
  * soft skill
  */
-export type GuageValue = {
+export type GaugeValue = {
     id: string;
     name: string;
     barVal: number;
@@ -52,4 +52,32 @@ export type EducationEntry = {
         gpa?: number;
         topics?: string[];
     }
+}
+
+/**
+ * Used to keep track of experiences (AKA paid work / internships / etc.)
+ */
+export type BulletEntry = {
+    id: string;
+    text: string;
+}
+
+export type ReferenceEntry = {
+    id: string;
+    type: string;
+    description: string;
+    href: string;
+}
+
+export type ExperienceEntry = {
+    id: string;
+    jobTitle: string;
+    jobLocation: string;
+    jobTimeStart: string;
+    jobTimeEnd: string;
+    jobType: string;
+    description: {
+        bullets: BulletEntry[];
+        references?: ReferenceEntry[];
+    };
 }
