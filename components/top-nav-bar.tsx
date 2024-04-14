@@ -46,9 +46,9 @@ export default function NavigationMenuDemo({ projBriefs } : { projBriefs : Proje
                 </NavigationMenuItem>
 
                 <NavigationMenuItem>
-                    <Link href="/siteinfo" legacyBehavior passHref>
+                    <Link href="/blog" legacyBehavior passHref>
                         <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                            Site Info
+                            Blog
                         </NavigationMenuLink>
                     </Link>
                 </NavigationMenuItem>

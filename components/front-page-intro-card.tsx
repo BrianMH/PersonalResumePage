@@ -27,7 +27,7 @@ export default function IdentityCard() {
                 {/* Image div */}
                 <div className="relative w-full flex flex-row align-middle justify-center">
                     <Image
-                        src="https://d3qc9p8qvz70tt.cloudfront.net/static/avatar.png"
+                        src={process.env.AWS_CLOUDFRONT_SERVE_ORIGIN + "/static/avatar.png"}
                         width={200}
                         height={200}
                         alt="profile picture"

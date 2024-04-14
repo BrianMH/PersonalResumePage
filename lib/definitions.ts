@@ -81,3 +81,31 @@ export type ExperienceEntry = {
         references?: ReferenceEntry[];
     };
 }
+
+export type TagElement = {
+    id: string;
+    tagName: string;
+    color?: string;
+}
+
+// previews aren't dependent on the content as no content is shown from the front page
+export type BlogPreview = {
+    id: string;
+    postTitle: string;
+    headerImage: string;
+    postDate: string;
+}
+
+export type BlogPost = {
+    id: string;
+    postTitle: string;
+    headerImage: string;
+    content: string;
+    postDate: string;
+    postTags: TagElement[];
+}
+
+// Used only for streaming content, as the id would uniquely identify each element
+export type IdWrapper = {
+    id: string;
+}

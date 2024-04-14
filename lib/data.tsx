@@ -1,12 +1,22 @@
 'use server';
-import {EducationEntry, ExperienceEntry, GaugeValue, ProjectBrief} from "@/lib/definitions";
+import {
+    BlogPost,
+    BlogPreview,
+    EducationEntry,
+    ExperienceEntry,
+    GaugeValue,
+    IdWrapper,
+    ProjectBrief, TagElement
+} from "@/lib/definitions";
 import {
     DummyEducationEntries,
-    DummyExperienceEntries,
+    DummyExperienceEntries, DummyPostData,
     DummyProjectBriefs,
-    DummySoftSkillData,
+    DummySoftSkillData, DummyTagData,
     DummyTechnicalGuageData
 } from "@/lib/dummyData";
+import {NUM_BLOG_POSTS} from "@/lib/consts";
+import {RuntimeError} from "next/dist/client/components/react-dev-overlay/internal/container/RuntimeError";
 
 /**
  * This is where all the database retrievals will happen.
@@ -50,4 +60,48 @@ export async function fetchExperienceEntries() : Promise<ExperienceEntry[]> {
 
     // and return it
     return expData;
+}
+
+export async function fetchNumPages(query: string) : Promise<number> {
+    // first load in our data
+    const numPages = Promise.resolve(1);
+
+    return numPages;
+}
+
+export async function fetchPostById(id: string) : Promise<BlogPost | undefined> {
+    // fetch post from database
+    const relevantPost = Promise.resolve(DummyPostData.find((post) => post.id === id));
+
+    // and then return
+    return relevantPost;
+}
+
+export async function fetchPostPreviewById(id: string) : Promise<BlogPreview | undefined> {
+    // fetch preview from database
+    const relevantPost = Promise.resolve(DummyPostData.map(post => ({
+        id: post.id,
+        postTitle: post.postTitle,
+        headerImage: post.headerImage,
+        postDate: post.postDate,
+    })).find((post) => post.id === id));
+
+    // and then return our preview
+    return relevantPost;
+}
+
+export async function fetchNextNPPostIds(query: string, currentPage: number, pageSize: number = NUM_BLOG_POSTS) : Promise<IdWrapper[]> {
+    // first load our data in
+    const nextNPosts = Promise.resolve(DummyPostData.map(post => ({
+        id: post.id,
+    })));
+
+    return nextNPosts;
+}
+
+export async function fetchAllTags() : Promise<TagElement[]> {
+    // first load our data in
+    const allTags = Promise.resolve(DummyTagData);
+
+    return allTags;
 }
