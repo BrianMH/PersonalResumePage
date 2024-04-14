@@ -4,6 +4,7 @@
 import {fetchAllTags} from "@/lib/data";
 import {TAG_COLOR_PALETTES} from "@/lib/consts";
 import TagNavigator from "@/components/blog-right-side-nav-tagging";
+import {Suspense} from "react";
 
 export default async function RightBlogNav() {
     // We need to grab all our potential blog tags from the server
@@ -28,7 +29,9 @@ export default async function RightBlogNav() {
 
             {/*This can contain our relevant tags in the form of clickable tags (only 1 selectable)*/}
             <div className="flex flex-row gap-3 flex-wrap align-middle justify-center">
-                <TagNavigator tagsWithColors={tagsWithColors} />
+                <Suspense>
+                    <TagNavigator tagsWithColors={tagsWithColors} />
+                </Suspense>
             </div>
         </div>
     )
