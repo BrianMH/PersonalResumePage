@@ -25,7 +25,7 @@ export default async function BlogPage({ searchParams } : SearchParamType ) {
     const currentPostIds = await fetchNextNPPostIds(query, currentPage);
 
     return (
-        <main className="flex-1 flex mb-6 p-6 min-w-screen flex-col">
+        <main className="flex-1 flex mb-6 p-6 min-w-screen max-w-full flex-col">
             <div className="h-fit flex flex-row align-middle justify-center">
                 <div className="w-fit flex flex-col bg-card p-6 text-center shadow-lg mb-12">
                     <h1 className="text-2xl">
@@ -39,7 +39,7 @@ export default async function BlogPage({ searchParams } : SearchParamType ) {
 
             {/*And here we will see our blog previews*/}
             <div className="h-fit flex flex-row align-middle justify-center">
-                <div className="flex flex-col gap-6">
+                <div className="flex flex-col">
                     {currentPostIds.map(idWrapper => {
 
                         return (
