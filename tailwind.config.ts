@@ -8,6 +8,14 @@ const config = {
     './app/**/*.{ts,tsx}',
     './src/**/*.{ts,tsx}',
 	],
+  safelist: [
+    "bg-red-500", "hover:bg-red-700",
+    "bg-teal-500", "hover:bg-teal-700",
+    "bg-indigo-500", "hover:bg-indigo-700",
+    "bg-amber-500", "hover:bg-amber-700",
+    "bg-emerald-500", "hover:bg-emerald-700",
+    "bg-violet-500", "hover:bg-violet-700",
+  ],
   prefix: "",
   theme: {
     container: {

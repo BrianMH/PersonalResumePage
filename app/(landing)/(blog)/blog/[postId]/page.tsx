@@ -56,7 +56,6 @@ export default async function BlogPostPage({ params } : { params : { postId : st
                         return (
                             <Badge
                                 key={curTag.id}
-                                className={`${curTag.color}`}
                             >
                                 {curTag.tagName}
                             </Badge>

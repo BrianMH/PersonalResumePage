@@ -85,7 +85,6 @@ export type ExperienceEntry = {
 export type TagElement = {
     id: string;
     tagName: string;
-    color?: string;
 }
 
 // previews aren't dependent on the content as no content is shown from the front page

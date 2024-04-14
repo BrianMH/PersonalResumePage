@@ -7,6 +7,7 @@
  */
 import {fetchNextNPPostIds, fetchNumPages} from "@/lib/data";
 import BlogPostCard from "@/components/blog-post-preview";
+import PaginationToN from "@/components/pagination-with-max-n";
 
 interface SearchParamType {
     searchParams?: {
@@ -53,7 +54,7 @@ export default async function BlogPage({ searchParams } : SearchParamType ) {
 
             {/*Finally our pagination which will be dependent on the total number of posts present*/}
             <div>
-
+                <PaginationToN nPages={totalPages} />
             </div>
         </main>
     )

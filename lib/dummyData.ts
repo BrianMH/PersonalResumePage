@@ -298,7 +298,7 @@ export const DummyPostData : BlogPost[] = [
 ]
 
 export const DummyTagData : TagElement[] = [
-    {id: "1", tagName: "Front-end", color: "bg-red-500"},
-    {id: "2", tagName: "Back-end", color: "bg-teal-500"},
-    {id: "3", tagName: "Updates", color: "bg-indigo-500"},
+    {id: "1", tagName: "Front-end"},
+    {id: "2", tagName: "Back-end"},
+    {id: "3", tagName: "Updates"},
 ]
