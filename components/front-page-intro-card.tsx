@@ -38,7 +38,7 @@ export default function IdentityCard() {
                 <div className="relative bottom-[100px] -mb-[100px]"></div>
 
                 {/*And this contains the actual link information*/}
-                <div className="flex-1 flex flex-col w-full align-middle p-6 pt-[115px] shadow-2xl bg-gradient-to-b from-background from-[57%] to-secondary to-[57%]">
+                <div className="flex-1 flex flex-col w-full align-middle p-6 pt-[115px] lg:shadow-2xl bg-gradient-to-b from-background from-[57%] to-secondary to-[57%]">
                     <p className="text-5xl font-serif text-center text-foreground pb-2">
                         Brian <span className="block font-semibold">Henriquez</span>
                     </p>

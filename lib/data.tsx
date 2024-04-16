@@ -6,12 +6,12 @@ import {
     ExperienceEntry,
     GaugeValue,
     IdWrapper,
-    ProjectBrief, TagElement
+    ProjectBrief, ProjectEntry, TagElement
 } from "@/lib/definitions";
 import {
     DummyEducationEntries,
     DummyExperienceEntries, DummyPostData,
-    DummyProjectBriefs,
+    DummyProjectData,
     DummySoftSkillData, DummyTagData,
     DummyTechnicalGuageData
 } from "@/lib/dummyData";
@@ -40,10 +40,24 @@ export async function fetchSoftSkills() : Promise<GaugeValue[]> {
 
 export async function fetchProjectBriefs() : Promise<ProjectBrief[]> {
     // first load in data
-    const briefData = Promise.resolve(DummyProjectBriefs);
+    const briefData = Promise.resolve(DummyProjectData.map(
+        (curProj => ({
+            id: curProj.id,
+            name: curProj.name,
+            description: curProj.description,
+        }))
+    ));
 
     // and return it
     return briefData;
+}
+
+export async function fetchProjects() : Promise<ProjectEntry[]> {
+    // first load in data
+    const projData = Promise.resolve(DummyProjectData);
+
+    // and return it
+    return projData;
 }
 
 export async function fetchEducationEntries() : Promise<EducationEntry[]> {

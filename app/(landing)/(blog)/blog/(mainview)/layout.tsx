@@ -15,8 +15,8 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <div className="flex-1 flex flex-col lg:flex-row-reverse overflow-y-scroll mt-6">
-            <div className="lg:fixed h-[80%] flex flex-row lg:flex-col align-middle justify-center">
+        <div className="flex-1 flex flex-col lg:flex-row-reverse overflow-y-scroll">
+            <div className="lg:fixed h-[80%] flex flex-row lg:flex-col align-middle justify-center mt-6 lg:mt-0">
                 <RightBlogNav />
             </div>
 

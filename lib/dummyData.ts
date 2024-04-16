@@ -2,7 +2,14 @@
  * Some dummy data to have information stored in lieu of a database. This will eventually get moved once a control panel
  * gets implemented on the site (after middleware access is used)
  */
-import {BlogPost, EducationEntry, ExperienceEntry, GaugeValue, ProjectBrief, TagElement} from "@/lib/definitions";
+import {
+    BlogPost,
+    EducationEntry,
+    ExperienceEntry,
+    GaugeValue,
+    ProjectEntry,
+    TagElement
+} from "@/lib/definitions";
 
 export const DummyTechnicalGuageData : GaugeValue[] = [
     {id: "0", name: "Python", barVal: 90},
@@ -23,31 +30,6 @@ export const DummySoftSkillData : GaugeValue[] = [
     {id: "2", name: "Communication", barVal: 95},
     {id: "3", name: "Leadership", barVal: 85},
     {id: "4", name: "Adaptability", barVal: 90}
-]
-
-export const DummyProjectBriefs : ProjectBrief[] = [
-    {
-        id: "1",
-        title: "Example #1",
-        description:
-            "An introduction to what this project (1) was about and its contents with a description that is slightly larger than" +
-            "the other descriptions to check for characteristics of the overflow...",
-        imageRef: null,
-    },
-    {
-        id: "2",
-        title: "Example #2",
-        description:
-            "An introduction to what this project (2) was about",
-        imageRef: null,
-    },
-    {
-        id: "3",
-        title: "Example #3",
-        description:
-            "An introduction to what this project (3) was about",
-        imageRef: null,
-    },
 ]
 
 export const DummyEducationEntries: EducationEntry[] = [
@@ -301,4 +283,34 @@ export const DummyTagData : TagElement[] = [
     {id: "1", tagName: "Front-end"},
     {id: "2", tagName: "Back-end"},
     {id: "3", tagName: "Updates"},
+]
+
+export const DummyProjectData : ProjectEntry[] = [
+    {
+        id: "1",
+        name: "Example Storefront",
+        description: "A full-stack app developed using Java Spring + Next.JS with basic NextAuth.JS integration.",
+        imageRef: "",
+        content: {
+
+        }
+    },
+    {
+        id: "2",
+        name: "PIB Face Recognition Project",
+        description: "An end-to-end data science project using TensorFlow, Flask, and AWS/Azure services.",
+        imageRef: "",
+        content: {
+
+        }
+    },
+    {
+        id: "3",
+        name: "STM32F4 Micromouse HAL using ARM C++",
+        description: "An embedded API created to encapsulate low-level hardware calls for a competition.",
+        imageRef: "",
+        content: {
+
+        }
+    }
 ]

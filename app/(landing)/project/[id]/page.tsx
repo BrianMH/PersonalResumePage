@@ -8,8 +8,10 @@
 
 export default async function SpecificProjectPage({ params } : { params : { id : string } }) {
     return (
-        <>
-            This is a reference to project page {params.id}!
-        </>
+        <div className="flex-1 my-6 mx-0 flex flex-row align-middle justify-center ">
+            <div className="w-[80%] bg-card p-6">
+                This is a reference to project page {params.id}!
+            </div>
+        </div>
     )
 }

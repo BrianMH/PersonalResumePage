@@ -31,10 +31,18 @@ export type Project = {
  */
 export type ProjectBrief = {
     id: string;
-    title: string;
+    name: string;
     description: string;
 
-    imageRef: string|null;
+    imageRef?: string|null;
+}
+
+export type ProjectEntry = {
+    id: string;
+    name: string;
+    description: string;
+    imageRef: string;
+    content: {};
 }
 
 /**
