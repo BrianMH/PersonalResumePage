@@ -116,3 +116,8 @@ export type BlogPost = {
 export type IdWrapper = {
     id: string;
 }
+
+export const enum Role {
+    USER = "ROLE_USER",
+    ADMIN = "ROLE_ADMIN",
+}

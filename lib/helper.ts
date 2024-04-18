@@ -1,5 +1,6 @@
 'use server';
 import {JSDOM} from "jsdom";
+import {signOut} from "@/auth";
 /**
  * Contains some of the helper functions that are necessary to manipulate the blog pages into properly functioning versions.
  */
@@ -21,4 +22,8 @@ export async function adjustImageSourcePath(postContent: string, postId: string)
     }
 
     return bodyTag.innerHTML;
+}
+
+export async function performLogOut() {
+    await signOut();
 }
