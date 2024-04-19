@@ -6,7 +6,7 @@ import {
     ExperienceEntry,
     GaugeValue,
     IdWrapper,
-    ProjectBrief, ProjectEntry, TagElement
+    ProjectBrief, ProjectEntry, Role, TagElement
 } from "@/lib/definitions";
 import {
     DummyEducationEntries,
@@ -118,4 +118,14 @@ export async function fetchAllTags() : Promise<TagElement[]> {
     const allTags = Promise.resolve(DummyTagData);
 
     return allTags;
+}
+
+/**
+ * User our server to look up the proper role to return given an input email. We can (in theory) pass even more elements
+ * to the server, but for an application this simple the user email should be sufficient.
+ *
+ * @param email
+ */
+export async function fetchUserRoleGivenEmail(email: string) : Promise<Role> {
+    return (email === process.env.ADMIN_EMAIL) ? Role.ADMIN : Role.USER;
 }

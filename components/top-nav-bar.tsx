@@ -83,12 +83,18 @@ export default function NavigationMenuDemo({ loginLink, userImage, username, use
                             </div>
                         </NavigationMenuTrigger>
                         <NavigationMenuContent>
-                            <ul className="flex flex-col w-[150px]">
-                                <ListItem>
-                                    <form action={performLogOut}>
-                                        <button className="p-4 h-full w-full">Sign Out</button>
-                                    </form>
-                                </ListItem>
+                            <ul className="flex flex-col p-4 w-[200px]">
+                                {userRole === Role.ADMIN && (
+                                    <ListItem
+                                        title="Dashboard"
+                                        href="/dashboard"
+                                    >
+                                        Control Panel
+                                    </ListItem>
+                                )}
+                                <form action={performLogOut}>
+                                    <button className="w-full text-sm flex flex-row select-none space-y-1 rounded-md p-3 py-5 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">Sign Out</button>
+                                </form>
                             </ul>
                         </NavigationMenuContent>
                     </NavigationMenuItem>

@@ -5,6 +5,7 @@
  *       privilege as well based on (unique) email.
  */
 import type { NextAuthConfig } from 'next-auth';
+import {Role} from "@/lib/definitions";
 
 export const authConfig = {
     pages: {
@@ -22,19 +23,21 @@ export const authConfig = {
             }
             return true;
         },
-        // processes the JWT
-        async jwt({token, user}) {
-            // console.log("Inside JWT callback");
-            // console.log(token);
-            // console.log(user);
+        /** Controls whether a login is allowed to occur **/
+        async signIn({ user, account, profile }) {
+            return true;
+        },
+        // processes the JWT (this would persist something to the database)
+        async jwt({token, user, profile}) {
+            if(user)
+                token.role = user.role;
+
             return token;
         },
         // modifies the session so that particular attributes are visible from the user inner attribute
         // these attributes would be returned on calling getSession(), getServerSession(), and useSession()
         async session({ session, token, user }) {
-            // console.log("Inside session callback");
-            // console.log(session);
-            // console.log(user);
+            session.user.role = token.role;
             return session;
         }
     },

@@ -8,7 +8,7 @@ import {Role} from "@/lib/definitions";
 
 export default async function TopNavWithContext() {
     // generate our login link for the user
-    const loginLink = `https://github.com/login/oauth/authorize?client_id=${process.env.AUTH_GITHUB_ID}`
+    const loginLink = `https://github.com/login/oauth/authorize?client_id=${process.env.AUTH_GITHUB_ID}&redirect_uri=${process.env.REDIRECT_URI_BASE}/api/auth/callback/github`
 
     // fetch projects to render them
     // We need to make sure we know our projects for our top nav
@@ -23,7 +23,7 @@ export default async function TopNavWithContext() {
             loginLink={loginLink}
             userImage={user?.user?.image || ''}
             username={user?.user?.name || ''}
-            userRole={Role.USER}
+            userRole={user?.user?.role || Role.USER}
             userLogged={loggedIn}
             projBriefs={projBriefs}
         />
