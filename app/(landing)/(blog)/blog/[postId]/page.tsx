@@ -7,13 +7,14 @@ import {Badge} from "@/components/ui/badge";
 import {Separator} from "@/components/ui/separator";
 import "@/app/(landing)/(blog)/blog/[postId]/posts.css";
 import Image from "next/image";
+import {notFound} from "next/navigation";
 
 export default async function BlogPostPage({ params } : { params : { postId : string } }) {
     // fetch our given main post
     const relPost = await fetchPostById(params.postId);
 
     if(!relPost)
-        throw new Error("No post exists with the given id.");
+        return notFound();
 
     // Before we post the image, we would like to make sure our image is properly targeting the right path
     relPost.content = await adjustImageSourcePath(relPost.content, params.postId);

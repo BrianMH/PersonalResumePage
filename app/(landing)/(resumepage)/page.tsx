@@ -1,4 +1,3 @@
-import Image from "next/image";
 import IdentityCard from "@/components/front-page-intro-card";
 import SkillInformationCard from "@/components/front-page-info-card";
 

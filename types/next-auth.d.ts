@@ -1,7 +1,8 @@
-import NextAuth, { DefaultSession } from "next-auth"
+import { DefaultSession } from "next-auth"
 import { DefaultUser } from "next-auth"
 import { Role } from "@/lib/definitions";
-import { JWT, DefaultJWT } from "next-auth/jwt"
+import { DefaultJWT } from "next-auth/jwt"
+import {TokenSet} from "@auth/core/types";
 
 declare module "next-auth" {
     /**
@@ -11,11 +12,16 @@ declare module "next-auth" {
         user: {
             /** User's associated role */
             role: Role;
+            access_token: string; // stores access credentials for backend
         } & DefaultSession["user"]
     }
 
     interface User extends DefaultUser {
         role: Role;
+    }
+
+    interface Account extends TokenSet {
+        refresh_token_expires_in?: number;
     }
 }
 
@@ -24,5 +30,9 @@ declare module "next-auth/jwt" {
     interface JWT extends DefaultJWT {
         /** Associated user role */
         role: Role;
+        refresh_token: string;
+        refresh_token_expires_at: number;
+        access_token: string;
+        expires_at: number;
     }
 }
