@@ -28,20 +28,24 @@ type PayloadType = Record<string, any> | null;
  * @param requestType the type of request to make
  * @param jsonResponse whether or not to expect a JSON object in the return value
  * @param data the data to convert to JSON to pass as the body to the server
+ * @param asUser determines the header token to use
  *
  * @return The response returned (or the body of the response if jsonResponse is true)
  */
-export async function makeLocalRequestWithData(url: string, requestType: RequestType, jsonResponse: boolean = false, data: PayloadType = null) {
+export async function makeLocalRequestWithData(url: string, requestType: RequestType, jsonResponse: boolean = false, data: PayloadType = null, asUser: boolean = false) {
     noStore(); // prevent any caching of response
 
     // access token will be attached to all requests but only validated on certain paths
-    const session = await auth();
-    const accessTokHeader = {"Authorization": `Bearer ${session?.user?.access_token}`};
+    let accessTokHeader = null;
+    if(asUser) {
+        const session = await auth();
+        accessTokHeader = session ? {"Authorization": `Bearer ${session?.user?.access_token}`} : null;
+    }
 
     let response = await fetch(url, {
         method: requestType,
         headers: {"Content-Type": "application/json",
-                    ...(session && accessTokHeader)}, // Add our bearer token if it exists in the session
+                    ...accessTokHeader}, // Add our bearer token if it exists in the session
         ...(data && {body: JSON.stringify(data)})
     });
 
@@ -157,14 +161,4 @@ export async function fetchAllTags() : Promise<TagElement[]> {
     const allTags = Promise.resolve(DummyTagData);
 
     return allTags;
-}
-
-/**
- * User our server to look up the proper role to return given an input email. We can (in theory) pass even more elements
- * to the server, but for an application this simple the user email should be sufficient.
- *
- * @param userPayload the user profile to pass to the database to check for privileges
- */
-export async function fetchUserRoleGivenEmail(userPayload : Profile) : Promise<Role> {
-    return (userPayload.email === process.env.ADMIN_EMAIL) ? Role.ADMIN : Role.USER;
 }

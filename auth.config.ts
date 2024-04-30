@@ -5,8 +5,8 @@
  *       privilege as well based on (unique) email.
  */
 import type {Account, NextAuthConfig} from 'next-auth';
-import {Role} from "@/lib/definitions";
 import {JWT} from "@auth/core/jwt";
+import {updateAccessToken} from "@/lib/databaseOps";
 
 export const authConfig = {
     pages: {
@@ -63,6 +63,13 @@ export const authConfig = {
                     const timeOfResponse = Date.now();
                     const tokens : Account = await response.json();
                     if(!response.ok) throw tokens;
+
+                    // and once the response works, we ask our database to change the currently saved token
+                    await updateAccessToken(token.sub || "",
+                        token.access_token,
+                        token.expires_at,
+                        tokens.access_token || "",
+                        Math.floor(timeOfResponse / 1000 + (tokens.expires_in || 0)));
 
                     return {
                         ...token,

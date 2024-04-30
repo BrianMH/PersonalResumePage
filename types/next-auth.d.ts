@@ -22,6 +22,7 @@ declare module "next-auth" {
 
     interface Account extends TokenSet {
         refresh_token_expires_in?: number;
+        role: Role;
     }
 }
 

@@ -121,3 +121,19 @@ export const enum Role {
     USER = "ROLE_USER",
     ADMIN = "ROLE_ADMIN",
 }
+
+// Represents a data type that will be used to communicate with the backend for token management
+export type User = {
+    id: string;
+    email: string;
+    username: string;
+    access_token: string;
+    expires: number;
+    roles: String[];
+}
+
+export type ServerStatusResponse = {
+    success: boolean,
+    statusCode: number,
+    message: string,
+}
