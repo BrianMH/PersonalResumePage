@@ -7,6 +7,7 @@
 import type {Account, NextAuthConfig} from 'next-auth';
 import {JWT} from "@auth/core/jwt";
 import {updateAccessToken} from "@/lib/databaseOps";
+import {Role} from "@/lib/definitions";
 
 export const authConfig = {
     pages: {
@@ -14,14 +15,24 @@ export const authConfig = {
     },
     callbacks: {
         authorized({ auth, request: { nextUrl } }) {
+            // first we can get the user's role before making any assumptions
+            // TODO: Convert list of roles into JWT token attribute and use to delineate valid paths for middleware
+            const userRole = (auth && auth.user.role) || Role.USER;
             const isLoggedIn = !!auth?.user;
+
             const isOnDashboard = nextUrl.pathname.startsWith('/dashboard');
+            const isCreatingNewPost = nextUrl.pathname.endsWith('/blog/new');
+
             if (isOnDashboard) {
                 if (isLoggedIn) return true;
-                return false; // Redirect unauthenticated users to login page
+                return false; // Redirect unauthenticated users to main page
+            } else if(isCreatingNewPost) {
+                if(isLoggedIn && userRole === Role.ADMIN) return true;
+                return false;
             } else if (isLoggedIn) {
                 return true;
             }
+
             return true;
         },
         // Controls whether a login is allowed to occur
@@ -45,38 +56,39 @@ export const authConfig = {
             } else if(token.refresh_token && token.expires_at && Date.now() < token.refresh_token_expires_at * 1000) {
                 // token has expired and still within realm of refreshing. try to refresh it via refresh token
                 try {
-                    const response = await fetch("https://github.com/login/oauth/access_token",
-                        {
+                    const response = await fetch("https://github.com/login/oauth/access_token?" +
+                                                            new URLSearchParams({
+                                                                client_id: process.env.AUTH_GITHUB_ID!,
+                                                                client_secret: process.env.AUTH_GITHUB_SECRET!,
+                                                                grant_type: "refresh_token",
+                                                                refresh_token: token.refresh_token,
+                                                                }),
+                    {
                             headers: {
                                 "Content-Type": "application/x-www-form-urlencoded",
+                                "Accept" : "application/json",  // required as default response is text
                             },
-                            body: new URLSearchParams({
-                                client_id: process.env.AUTH_GITHUB_ID || "",
-                                client_secret: process.env.AUTH_GITHUB_SECRET || "",
-                                grant_type: "refresh_token",
-                                refresh_token: token.refresh_token,
-                            }),
                             method: "POST",
                         })
 
                     // convert to our adjusted class and check response
                     const timeOfResponse = Date.now();
+                    if(!response.ok) throw response;
                     const tokens : Account = await response.json();
-                    if(!response.ok) throw tokens;
 
                     // and once the response works, we ask our database to change the currently saved token
-                    await updateAccessToken(token.sub || "",
+                    await updateAccessToken(token.sub!,
                         token.access_token,
                         token.expires_at,
-                        tokens.access_token || "",
-                        Math.floor(timeOfResponse / 1000 + (tokens.expires_in || 0)));
+                        tokens.access_token!,
+                        Math.floor(timeOfResponse / 1000 + tokens.expires_in!));
 
                     return {
                         ...token,
                         access_token: tokens.access_token,
-                        expires_at: Math.floor(timeOfResponse / 1000 + (tokens.expires_in || 0)),
+                        expires_at: Math.floor(timeOfResponse / 1000 + tokens.expires_in!),
                         refresh_token: tokens.refresh_token,
-                        refresh_token_expires_at: Math.floor(timeOfResponse / 1000 + (tokens.refresh_token_expires_in || 0)),
+                        refresh_token_expires_at: Math.floor(timeOfResponse / 1000 + tokens.refresh_token_expires_in!),
                     } as JWT
                 } catch(error) {
                     console.log("Error refreshing token: ", error);
