@@ -212,10 +212,10 @@ const exampleStaticBlogPost = `
         </p>
     
         <figure>
-            <img src="ResumeServerArchitecture-1.png" alt="Current ideal architecture of the site" height="500" width="100%"/>
+            <img src="ResumeServerArchitecture-1.png" alt="Current ideal architecture of the site" />
             
             <figcaption>
-                <p style="white-space: nowrap"><strong>Figure 1)</strong></p>
+                <p>Figure 1</p>
                 <p>
                     The planned site architecture. Thick black lines indicate the main flow of
                     requests while the red lines indicate event triggers. The dotted black line is simply an indicator of API

@@ -5,7 +5,7 @@ import {fetchPostById} from "@/lib/data";
 import {adjustImageSourcePath} from "@/lib/helper";
 import {Badge} from "@/components/ui/badge";
 import {Separator} from "@/components/ui/separator";
-import "@/app/(landing)/(blog)/blog/[postId]/posts.css";
+import "@/app/(landing)/(blog)/blog/posts.css";
 import Image from "next/image";
 import {notFound} from "next/navigation";
 

@@ -5,7 +5,7 @@
  */
 export default function BottomBarReference() {
     return (
-        <div className="flex flex-row justify-around align-middle pb-1">
+        <div className="hidden md:flex flex-row justify-around align-middle pb-1">
             <div className="text-gray-700 text-sm text-center">
                 Any questions? Feel free to send me a message to my e-mail or using the following form!
             </div>

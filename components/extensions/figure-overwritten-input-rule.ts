@@ -1,3 +1,12 @@
+/**
+ * Default input rule makes an assumption about matching such that it only removes the first element of the match, so we
+ * need to reconfigure the input rule functor factory so that it instead deletes the entire match instead of only the
+ * first given match from our regex.
+ *
+ * We then use it to construct the same type of figure construct by default as the attributes themselves are only
+ * related to the image itself, and not the caption (which has to use two columns, by design). It's a bit hacky but it
+ * does seem to work properly.
+ */
 import { NodeType } from '@tiptap/pm/model'
 
 import { InputRule, InputRuleFinder } from "@tiptap/core";
@@ -55,7 +64,7 @@ export function customNodeInputRule(config: {
                         content: [
                             {
                                 type: 'text',
-                                text: match[4] || "Example Text",
+                                text: match[match.length-1] || "Example Text",
                             }
                         ]
                     })

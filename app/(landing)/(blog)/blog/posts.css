@@ -2,12 +2,20 @@
 Defines the styles to be globally available for the templated posts in the blog, so we will only be styling elements
 within the article tag, which are those in particular that were templated
 */
+
+/*
+    Base article styles
+ */
 article ul {
     list-style: inside circle;
 }
 
 article ol {
     list-style: inside decimal;
+}
+
+article li p {
+    display: inline;
 }
 
 article a {
@@ -22,21 +30,81 @@ article a:hover {
 article section {
     display: flex;
     flex-direction: column;
+    row-gap: 1.5rem;
     align-items: center;
     justify-content: center;
-    row-gap: 1.5rem;
 }
 
-article section h3 {
+article section > p {
+    width: 100%;
+}
+
+
+article div section p:last-of-type {
+    /* This padding will only get applied to the editor as the content is nested within two divs as a context */
+    padding-bottom: 1.5rem;
+}
+
+/*
+    Font sizes for headers for the article
+ */
+article h1 {
+    font-size: 2.25rem; /* 36px */
+    line-height: 2.5rem; /* 40px */
+}
+
+article h2 {
+    font-size: 1.875rem; /* 30px */
+    line-height: 2.25rem; /* 36px */
+}
+
+article h3 {
     font-size: 1.5rem;
     line-height: 2rem;
 }
 
+article h4 {
+    font-size: 1.25rem; /* 20px */
+    line-height: 1.75rem; /* 28px */
+}
+
+article h5 {
+    font-size: 1.125rem; /* 18px */
+    line-height: 1.75rem; /* 28px */
+}
+
+article h6 {
+    font-size: 1rem; /* 16px */
+    line-height: 1.5rem; /* 24px */
+    font-style: italic;
+}
+
+/*
+    This manages the parts that deal with blocks such as code blocks, image blocks, caption blocks, etc.
+*/
+
 article code {
     background-color: rgba(231,229,229,0.93);
+    color: #616161;
     padding-left: 5px;
     padding-right: 5px;
     word-break: break-word; /* Takes care of the weird spacing issues on mobile */
+}
+
+article pre {
+    background: #0D0D0D;
+    color: #FFF;
+    font-family: 'JetBrainsMono', monospace;
+    padding: 0.75rem 1rem;
+    margin: 10px;
+    border-radius: 5px;
+}
+
+article pre code {
+    color: inherit;
+    padding: 0;
+    background: none;
+    font-size: 0.8rem;
 }
 
 article blockquote {
@@ -64,4 +132,14 @@ article figure figcaption {
     padding-left: 10%;
     padding-right: 10%;
     column-gap: 1rem;
+}
+
+article figure figcaption p:first-child {
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+article figure img {
+    max-width: 100%;
+    max-height: 100%;
 }
