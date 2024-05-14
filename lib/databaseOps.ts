@@ -9,6 +9,13 @@ import {unstable_noStore as noStore} from "next/dist/server/web/spec-extension/u
 /***********************************************************************
  *                       FETCH OPERATION
  * *********************************************************************/
+/**
+ * Backend specific API request. This operation can only make requests with representation as the backend.
+ * @param url
+ * @param requestType
+ * @param jsonResponse
+ * @param data
+ */
 export async function makeAPIRequestWithData(url: string,
                                              requestType: "POST" | "GET" | "DELETE" | "PATCH" | "PUT",
                                              jsonResponse: boolean = false,
@@ -77,6 +84,72 @@ const tokenUpdateSchema = z.object({
     new_expires_at: User.shape.expires,
 })
 
+const tokenSyncSchema = z.object({
+    access_token: User.shape.access_token,
+    expires_at: User.shape.expires,
+    provider: z.string({
+        required_error: "Provider must be a valid string."
+    }),
+    provider_account_id: z.string({
+        required_error: "Provider account id cannot be empty."
+    }),
+})
+
+/**
+ * Unlike below, which modifies a given user's possible tokens based on the old value to refresh the value, this simply
+ * indicates to the backend that the token should match what was passed to the backend.
+ * @param provider
+ * @param providerId
+ * @param accessToken
+ * @param expiry
+ */
+export async function syncAccessToken(provider: string, providerId: string, accessToken: string, expiry: number) : Promise<UserStatus> {
+    const validatedTokenSync = tokenSyncSchema.safeParse({
+        access_token: accessToken,
+        expires_at: expiry,
+        provider: provider,
+        provider_account_id: providerId,
+    })
+
+    if(!validatedTokenSync.success) {
+        console.log(validatedTokenSync.error.flatten());
+        return {
+            errors: {},
+            message: "Improperly formatted input data",
+        }
+    }
+
+    // then attempt server communication
+    try {
+        const relEndpoint = process.env.BACKEND_API_ROOT + `/users/updateToken`;
+        const response = await makeAPIRequestWithData(relEndpoint, "POST", false, validatedTokenSync.data);
+
+        // make sure response is valid
+        if(!response.ok) {
+            console.log("Response failed with status code: " + response.status);
+            throw response;
+        }
+
+        // and process make sure our return is valid
+        const payload : ServerStatusResponse = await response.json();
+        if(!payload.success) {
+            console.log(payload);
+            throw payload;
+        }
+
+        // then finally return success
+        return {
+            message: "Tokens synced."
+        }
+    } catch (e) {
+        console.log("Failed to perform token sync: ", e);
+        return {
+            errors: {},
+            message: "Failed to perform token sync. Is the server up?"
+        }
+    }
+}
+
 /**
  * Performs the updating of tokens on the server backend using the server's API key.
  *
@@ -98,7 +171,6 @@ export async function updateAccessToken(userId : string, oldAccessToken : string
     if(!validatedTokenUpdate.success) {
         console.log(validatedTokenUpdate.error.flatten());
         return {
-            errors: validatedTokenUpdate.error.flatten().fieldErrors,
             message: "Improperly formatted input data.",
         }
     }
@@ -110,7 +182,7 @@ export async function updateAccessToken(userId : string, oldAccessToken : string
 
         // and then make sure our response is valid
         if(!response.ok) {
-            console.log(response);
+            console.log("Response failed with status code: " + response.status);
             throw response;
         }
 

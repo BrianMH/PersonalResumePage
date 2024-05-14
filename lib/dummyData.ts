@@ -314,3 +314,23 @@ export const DummyProjectData : ProjectEntry[] = [
         }
     }
 ]
+
+/**
+ * Used as an example of what can be parsed by the editor in the new blog post page.
+ */
+export const NewPostExampleContent = `
+    <section>
+        <h3>Section 1-1</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        <h3>Section 1-2</h3>
+        <p>Porta non pulvinar neque laoreet suspendisse interdum consectetur. Erat imperdiet sed euismod nisi porta lorem mollis aliquam. Id consectetur purus ut faucibus pulvinar. Tempor orci dapibus ultrices in iaculis. Vehicula ipsum a arcu cursus vitae congue mauris. Luctus accumsan tortor posuere ac ut consequat. Pellentesque elit eget gravida cum sociis natoque penatibus et. Faucibus vitae aliquet nec ullamcorper sit amet risus. Natoque penatibus et magnis dis parturient montes nascetur ridiculus mus. Cras fermentum odio eu feugiat pretium nibh. Nec sagittis aliquam malesuada bibendum arcu vitae elementum. Sem integer vitae justo eget magna fermentum iaculis eu. Urna duis convallis convallis tellus. Penatibus et magnis dis parturient montes nascetur ridiculus mus. Volutpat ac tincidunt vitae semper quis. Tempus quam pellentesque nec nam aliquam sem et tortor consequat. Amet commodo nulla facilisi nullam. Orci a scelerisque purus semper eget duis at tellus.</p>
+    </section>
+    <section>
+        <h3>Section 2-1</h3>
+        <p>Scelerisque eleifend donec pretium vulputate sapien nec sagittis aliquam. Nulla porttitor massa id neque. At volutpat diam ut venenatis tellus in. Sagittis orci a scelerisque purus semper eget. Urna nec tincidunt praesent semper feugiat nibh sed. Ultricies mi eget mauris pharetra et ultrices. Imperdiet sed euismod nisi porta lorem mollis. Lobortis scelerisque fermentum dui faucibus in ornare quam viverra orci. Non nisi est sit amet. Enim lobortis scelerisque fermentum dui faucibus in ornare quam. Lectus vestibulum mattis ullamcorper velit sed. Lacus sed turpis tincidunt id aliquet risus feugiat in. Fermentum iaculis eu non diam phasellus vestibulum lorem sed. Facilisi nullam vehicula ipsum a arcu cursus vitae congue. Aliquam malesuada bibendum arcu vitae elementum curabitur vitae nunc. Posuere sollicitudin aliquam ultrices sagittis orci a scelerisque purus semper.</p>
+    </section>
+    <section>
+        <h3>Section 3-1</h3>
+        <p>Porttitor leo a diam sollicitudin tempor id eu nisl. Facilisis magna etiam tempor orci eu. Tincidunt eget nullam non nisi est sit amet. Tempus iaculis urna id volutpat lacus laoreet. Feugiat in fermentum posuere urna nec tincidunt praesent semper feugiat. Tristique sollicitudin nibh sit amet commodo nulla. Felis eget velit aliquet sagittis id consectetur purus ut. Vulputate enim nulla aliquet porttitor. Ligula ullamcorper malesuada proin libero nunc consequat interdum. Ac odio tempor orci dapibus. Justo laoreet sit amet cursus sit amet. Diam maecenas sed enim ut sem. Aliquet lectus proin nibh nisl. Et tortor at risus viverra. Leo duis ut diam quam nulla porttitor massa id neque. Nisl purus in mollis nunc sed. Non quam lacus suspendisse faucibus interdum posuere lorem ipsum dolor.</p>
+    </section>
+`

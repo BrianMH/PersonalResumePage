@@ -6,7 +6,7 @@
  */
 import type {Account, NextAuthConfig} from 'next-auth';
 import {JWT} from "@auth/core/jwt";
-import {updateAccessToken} from "@/lib/databaseOps";
+import {syncAccessToken, updateAccessToken} from "@/lib/databaseOps";
 import {Role} from "@/lib/definitions";
 
 export const authConfig = {
@@ -44,10 +44,20 @@ export const authConfig = {
             if(account && user) {
                 // logon performed. save any entries required in the token as necessary
                 token.role = user.role;
-                token.refresh_token = account.refresh_token || "";
-                token.refresh_token_expires_at = (account.expires_at || 0) - (account.expires_in || 0) + (account.refresh_token_expires_in || 0);
-                token.access_token = account.access_token || "";
-                token.expires_at = account.expires_at || 0;
+                token.refresh_token = account.refresh_token!;
+                token.refresh_token_expires_at = (account.expires_at!) - (account.expires_in!) + (account.refresh_token_expires_in || 0);
+                token.access_token = account.access_token!;
+                token.expires_at = account.expires_at!;
+
+                // then we can attempt to make sure the server is properly synchronized with the given account
+                // as this isn't handled automatically (for example, if a token is lost and automatically issued on login)
+                try {
+                    const respMessage = await syncAccessToken(account.provider, account.providerAccountId, account.access_token!, account.expires_at!);
+                    if(respMessage.errors !== undefined)
+                        throw respMessage;
+                } catch (e) {
+                    console.log("Error synchronizing user token with backend.");
+                }
 
                 return token;
             } else if(Date.now() < token.expires_at * 1000) {

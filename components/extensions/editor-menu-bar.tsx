@@ -5,7 +5,7 @@ import {Button} from "@/components/ui/button";
 import {
     BoldIcon,
     Code2Icon,
-    CodeSquareIcon,
+    CodeSquareIcon, Heading1Icon, Heading2Icon, Heading3Icon, Heading4Icon, Heading5Icon, Heading6Icon,
     ItalicIcon,
     ListIcon,
     ListOrderedIcon, MessageSquareQuoteIcon, Redo2Icon, SeparatorHorizontalIcon,
@@ -27,8 +27,9 @@ export default function MenuBar() {
     }
 
     return (
-        <div className="flex flex-row justify-center align-middle flex-wrap gap-x-1 gap-y-1 pb-1">
+        <div className="flex flex-row justify-center align-middle flex-wrap gap-x-1 gap-y-1 pb-6">
             <Button
+                variant="outline"
                 onClick={() => editor.chain().focus().toggleBold().run()}
                 disabled={
                     !editor.can()
@@ -37,11 +38,12 @@ export default function MenuBar() {
                         .toggleBold()
                         .run()
                 }
-                className={`bg-card text-card-foreground border-black border-[1px] hover:bg-accent hover:text-accent-foreground ${editor.isActive('bold') ? 'bg-blend-color bg-zinc-300' : ''}`}
+                className={`border-[1px] ${editor.isActive('bold') ? 'bg-blend-color bg-zinc-300' : ''}`}
             >
-                <BoldIcon />
+                <BoldIcon className="text-foreground"/>
             </Button>
             <Button
+                variant="outline"
                 onClick={() => editor.chain().focus().toggleItalic().run()}
                 disabled={
                     !editor.can()
@@ -50,11 +52,12 @@ export default function MenuBar() {
                         .toggleItalic()
                         .run()
                 }
-                className={`bg-card text-card-foreground border-black border-[1px] hover:bg-accent hover:text-accent-foreground ${editor.isActive('italic') ? 'bg-blend-color bg-zinc-300' : ''}`}
+                className={`${editor.isActive('italic') ? 'bg-blend-color bg-zinc-300' : ''}`}
             >
-                <ItalicIcon />
+                <ItalicIcon className="text-foreground"/>
             </Button>
             <Button
+                variant="outline"
                 onClick={() => editor.chain().focus().toggleStrike().run()}
                 disabled={
                     !editor.can()
@@ -63,11 +66,12 @@ export default function MenuBar() {
                         .toggleStrike()
                         .run()
                 }
-                className={`bg-card text-card-foreground border-black border-[1px] hover:bg-accent hover:text-accent-foreground ${editor.isActive('strike') ? 'bg-blend-color bg-zinc-300' : ''}`}
+                className={`${editor.isActive('strike') ? 'bg-blend-color bg-zinc-300' : ''}`}
             >
-                <StrikethroughIcon />
+                <StrikethroughIcon className="text-foreground"/>
             </Button>
             <Button
+                variant="outline"
                 onClick={() => editor.chain().focus().toggleCode().run()}
                 disabled={
                     !editor.can()
@@ -76,95 +80,106 @@ export default function MenuBar() {
                         .toggleCode()
                         .run()
                 }
-                className={`bg-card text-card-foreground border-black border-[1px] hover:bg-accent hover:text-accent-foreground ${editor.isActive('code') ? 'bg-blend-color bg-zinc-300' : ''}`}
+                className={`{editor.isActive('code') ? 'bg-blend-color bg-zinc-300' : ''}`}
             >
-                <Code2Icon />
+                <Code2Icon className="text-foreground"/>
             </Button>
             <Button
+                variant="outline"
                 onClick={() => editor.chain().focus().unsetAllMarks().run()}
-                className="bg-card text-card-foreground border-black border-[1px] hover:bg-accent hover:text-accent-foreground"
             >
-                clear marks
+                <p>Clear Marks</p>
             </Button>
             <Button
+                variant="outline"
                 onClick={() => editor.chain().focus().clearNodes().run()}
-                className="bg-card text-card-foreground border-black border-[1px] hover:bg-accent hover:text-accent-foreground"
             >
-                clear nodes
+                <p>Clear Nodes</p>
             </Button>
             <Button
+                variant="outline"
                 onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-                className={`bg-card text-card-foreground border-black border-[1px] hover:bg-accent hover:text-accent-foreground ${editor.isActive('heading', { level: 1 }) ? 'bg-blend-color bg-zinc-300' : ''}`}
+                className={`${editor.isActive('heading', { level: 1 }) ? 'bg-blend-color bg-zinc-300' : ''}`}
             >
-                h1
+                <Heading1Icon className="text-foreground"/>
             </Button>
             <Button
+                variant="outline"
                 onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-                className={`bg-card text-card-foreground border-black border-[1px] hover:bg-accent hover:text-accent-foreground ${editor.isActive('heading', { level: 2 }) ? 'bg-blend-color bg-zinc-300' : ''}`}
+                className={`${editor.isActive('heading', { level: 2 }) ? 'bg-blend-color bg-zinc-300' : ''}`}
             >
-                h2
+                <Heading2Icon className="text-foreground"/>
             </Button>
             <Button
+                variant="outline"
                 onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
-                className={`bg-card text-card-foreground border-black border-[1px] hover:bg-accent hover:text-accent-foreground ${editor.isActive('heading', { level: 3 }) ? 'bg-blend-color bg-zinc-300' : ''}`}
+                className={`${editor.isActive('heading', { level: 3 }) ? 'bg-blend-color bg-zinc-300' : ''}`}
             >
-                h3
+                <Heading3Icon className="text-foreground"/>
             </Button>
             <Button
+                variant="outline"
                 onClick={() => editor.chain().focus().toggleHeading({ level: 4 }).run()}
-                className={`bg-card text-card-foreground border-black border-[1px] hover:bg-accent hover:text-accent-foreground ${editor.isActive('heading', { level: 4 }) ? 'bg-blend-color bg-zinc-300' : ''}`}
+                className={`${editor.isActive('heading', { level: 4 }) ? 'bg-blend-color bg-zinc-300' : ''}`}
             >
-                h4
+                <Heading4Icon className="text-foreground"/>
             </Button>
             <Button
+                variant="outline"
                 onClick={() => editor.chain().focus().toggleHeading({ level: 5 }).run()}
-                className={`bg-card text-card-foreground border-black border-[1px] hover:bg-accent hover:text-accent-foreground ${editor.isActive('heading', { level: 5 }) ? 'bg-blend-color bg-zinc-300' : ''}`}
+                className={`${editor.isActive('heading', { level: 5 }) ? 'bg-blend-color bg-zinc-300' : ''}`}
             >
-                h5
+                <Heading5Icon className="text-foreground"/>
             </Button>
             <Button
+                variant="outline"
                 onClick={() => editor.chain().focus().toggleHeading({ level: 6 }).run()}
-                className={`bg-card text-card-foreground border-black border-[1px] hover:bg-accent hover:text-accent-foreground ${editor.isActive('heading', { level: 6 }) ? 'bg-blend-color bg-zinc-300' : ''}`}
+                className={`${editor.isActive('heading', { level: 6 }) ? 'bg-blend-color bg-zinc-300' : ''}`}
             >
-                h6
+                <Heading6Icon className="text-foreground"/>
             </Button>
             <Button
+                variant="outline"
                 onClick={() => editor.chain().focus().toggleBulletList().run()}
-                className={`bg-card text-card-foreground border-black border-[1px] hover:bg-accent hover:text-accent-foreground ${editor.isActive('bulletList') ? 'bg-blend-color bg-zinc-300' : ''}`}
+                className={`${editor.isActive('bulletList') ? 'bg-blend-color bg-zinc-300' : ''}`}
             >
-                <ListIcon />
+                <ListIcon className="text-foreground"/>
             </Button>
             <Button
+                variant="outline"
                 onClick={() => editor.chain().focus().toggleOrderedList().run()}
-                className={`bg-card text-card-foreground border-black border-[1px] hover:bg-accent hover:text-accent-foreground ${editor.isActive('orderedList') ? 'bg-blend-color bg-zinc-300' : ''}`}
+                className={`${editor.isActive('orderedList') ? 'bg-blend-color bg-zinc-300' : ''}`}
             >
-                <ListOrderedIcon />
+                <ListOrderedIcon className="text-foreground"/>
             </Button>
             <Button
+                variant="outline"
                 onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-                className={`bg-card text-card-foreground border-black border-[1px] hover:bg-accent hover:text-accent-foreground ${editor.isActive('codeBlock') ? 'bg-blend-color bg-zinc-300' : ''}`}
+                className={`${editor.isActive('codeBlock') ? 'bg-blend-color bg-zinc-300' : ''}`}
             >
-                <CodeSquareIcon />
+                <CodeSquareIcon className="text-foreground"/>
             </Button>
             <Button
+                variant="outline"
                 onClick={() => editor.chain().focus().toggleBlockquote().run()}
-                className={`bg-card text-card-foreground border-black border-[1px] hover:bg-accent hover:text-accent-foreground ${editor.isActive('blockquote') ? 'bg-blend-color bg-zinc-300' : ''}`}
+                className={`${editor.isActive('blockquote') ? 'bg-blend-color bg-zinc-300' : ''}`}
             >
-                <MessageSquareQuoteIcon />
+                <MessageSquareQuoteIcon className="text-foreground"/>
             </Button>
             <Button
+                variant="outline"
                 onClick={() => editor.chain().focus().setHorizontalRule().run()}
-                className="bg-card text-card-foreground border-black border-[1px] hover:bg-accent hover:text-accent-foreground"
             >
-                <SeparatorHorizontalIcon />
+                <SeparatorHorizontalIcon className="text-foreground"/>
             </Button>
             <Button
+                variant="outline"
                 onClick={() => editor.chain().focus().setHardBreak().run()}
-                className="bg-card text-card-foreground border-black border-[1px] hover:bg-accent hover:text-accent-foreground"
             >
-                {"<br>"}
+                <p>{"<br>"}</p>
             </Button>
             <Button
+                variant="outline"
                 onClick={() => editor.chain().focus().undo().run()}
                 disabled={
                     !editor.can()
@@ -173,11 +188,11 @@ export default function MenuBar() {
                         .undo()
                         .run()
                 }
-                className="bg-card text-card-foreground border-black border-[1px] hover:bg-accent hover:text-accent-foreground"
             >
                 <Undo2Icon />
             </Button>
             <Button
+                variant="outline"
                 onClick={() => editor.chain().focus().redo().run()}
                 disabled={
                     !editor.can()
@@ -186,22 +201,22 @@ export default function MenuBar() {
                         .redo()
                         .run()
                 }
-                className="bg-card text-card-foreground border-black border-[1px] hover:bg-accent hover:text-accent-foreground"
             >
                 <Redo2Icon />
             </Button>
             <Button
+                variant="outline"
                 onClick={() => editor.chain().focus().toggleSectionBlock().run()}
-                className={`bg-card text-card-foreground border-black border-[1px] hover:bg-accent hover:text-accent-foreground ${editor.isActive('sectionBlock') ? 'bg-blend-color bg-zinc-300' : ''}`}
+                className={`${editor.isActive('sectionBlock') ? 'bg-blend-color bg-zinc-300' : ''}`}
             >
                 Section
             </Button>
             <Popover>
                 <PopoverTrigger asChild>
                     <Button
-                        className="bg-card text-card-foreground border-black border-[1px] hover:bg-accent hover:text-accent-foreground"
+                        variant="outline"
                     >
-                        Figure
+                        <p>Figure</p>
                     </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-96">

@@ -1,6 +1,7 @@
 import BottomBarReference from "@/components/bottom-footer-references";
 import Image from "next/image";
 import TopNavWithContext from "@/components/top-nav-login-wrapper";
+import {auth} from "@/auth";
 
 /**
  * The top bar for most of the resume page (aside from the management dash, most likely)

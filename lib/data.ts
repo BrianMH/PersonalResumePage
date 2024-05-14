@@ -20,51 +20,9 @@ import {Profile} from "next-auth";
 import {unstable_noStore as noStore} from "next/cache";
 import {auth} from "@/auth";
 
-type RequestType = "POST" | "GET" | "DELETE" | "PATCH" | "PUT";
-type PayloadType = Record<string, any> | null;
-/**
- * Helper function to request an online attribute
- * @param url the endpoint to acquire data from
- * @param requestType the type of request to make
- * @param jsonResponse whether or not to expect a JSON object in the return value
- * @param data the data to convert to JSON to pass as the body to the server
- * @param asUser determines the header token to use
- *
- * @return The response returned (or the body of the response if jsonResponse is true)
- */
-export async function makeLocalRequestWithData(url: string, requestType: RequestType, jsonResponse: boolean = false, data: PayloadType = null, asUser: boolean = false) {
-    noStore(); // prevent any caching of response
-
-    // access token will be attached to all requests but only validated on certain paths
-    let accessTokHeader = null;
-    if(asUser) {
-        const session = await auth();
-        accessTokHeader = session ? {"Authorization": `Bearer ${session?.user?.access_token}`} : null;
-    }
-
-    let response = await fetch(url, {
-        method: requestType,
-        headers: {"Content-Type": "application/json",
-                    ...accessTokHeader}, // Add our bearer token if it exists in the session
-        ...(data && {body: JSON.stringify(data)})
-    });
-
-    try {
-        if (jsonResponse)
-            return response.json();
-        else
-            return response;
-    } catch(error) {
-        console.error("Database Error: ", error);
-        throw new Error("Failed to generate a proper response...")
-    }
-}
-
-
 /**
  * This is where all the database retrievals will happen.
  */
-
 export async function fetchTechnicalSkills() : Promise<GaugeValue[]> {
     // first load our data via a fetch operation
     const skillData = Promise.resolve(DummyTechnicalGuageData);
