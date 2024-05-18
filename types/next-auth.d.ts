@@ -13,6 +13,7 @@ declare module "next-auth" {
             /** User's associated role */
             role: Role;
             access_token: string; // stores access credentials for backend
+            referer: string // stores the source of the access token
         } & DefaultSession["user"]
     }
 
@@ -34,6 +35,7 @@ declare module "next-auth/jwt" {
         refresh_token: string;
         refresh_token_expires_at: number;
         access_token: string;
+        referer: string;
         expires_at: number;
     }
 }

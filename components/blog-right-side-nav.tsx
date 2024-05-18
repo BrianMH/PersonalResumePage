@@ -10,6 +10,9 @@ export default async function RightBlogNav() {
     // We need to grab all our potential blog tags from the server
     const receivedTags = await fetchAllTags();
 
+    if(!receivedTags)
+        throw Error("Invalid tag return. Is the server down?");
+
     // we randomly select colors for the tags according to their ids
     const tagsWithColors = receivedTags.map(curTag => {
         const hash = String(curTag.id).split("").map(char => char.charCodeAt(0)).reduce((prev, cur, ind) => (prev ^ cur), 0);
@@ -22,7 +25,7 @@ export default async function RightBlogNav() {
     })
 
     return (
-        <div className="w-64 h-60 p-3 bg-card mr-6 shadow-2xl">
+        <div className="w-64 h-fit p-3 pb-6 bg-card mr-6 shadow-2xl">
             <p className="text-center pb-3 text-2xl">
                 Topics
             </p>

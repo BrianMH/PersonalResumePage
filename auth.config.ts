@@ -48,6 +48,7 @@ export const authConfig = {
                 token.refresh_token_expires_at = (account.expires_at!) - (account.expires_in!) + (account.refresh_token_expires_in || 0);
                 token.access_token = account.access_token!;
                 token.expires_at = account.expires_at!;
+                token.referer = account.provider;
 
                 // then we can attempt to make sure the server is properly synchronized with the given account
                 // as this isn't handled automatically (for example, if a token is lost and automatically issued on login)
@@ -113,6 +114,9 @@ export const authConfig = {
         // these attributes would be returned on calling getSession(), getServerSession(), and useSession()
         async session({ session, token, user }) {
             session.user.role = token.role;
+            session.user.access_token = token.access_token;
+            session.user.referer = token.referer;
+
             return session;
         }
     },

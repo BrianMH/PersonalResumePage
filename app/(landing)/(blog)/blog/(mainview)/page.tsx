@@ -11,7 +11,7 @@ import PaginationToN from "@/components/pagination-with-max-n";
 
 interface SearchParamType {
     searchParams?: {
-        query?: string; // this would hold the category if relevant
+        category?: string; // this would hold the category if relevant
         page?: string; // and the corresponding page
     }
 }
@@ -19,7 +19,7 @@ interface SearchParamType {
 export default async function BlogPage({ searchParams } : SearchParamType ) {
     // we would want to load up the most recent 5 blog posts by default, so we get our post ids and forward them to
     // individually suspended blog preview components
-    const query = searchParams?.query || '';
+    const query = searchParams?.category || '';
     const currentPage = Number(searchParams?.page) || 1;
     const totalPages = await fetchNumPages(query);
     const currentPostIds = await fetchNextNPPostIds(query, currentPage);
@@ -39,7 +39,7 @@ export default async function BlogPage({ searchParams } : SearchParamType ) {
 
             {/*And here we will see our blog previews*/}
             <div className="h-fit flex flex-row align-middle justify-center">
-                <div className="flex flex-col">
+                <div className="flex flex-col gap-y-6">
                     {currentPostIds.map(idWrapper => {
 
                         return (

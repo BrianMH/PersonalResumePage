@@ -22,8 +22,8 @@ export default async function BlogPostCard( { blogId } : { blogId : string }) {
             {/*We have the image previews*/}
             <div className="relative h-64 rounded-t-2xl overflow-hidden">
                 <Image
-                    src={process.env.AWS_CLOUDFRONT_SERVE_ORIGIN + "/dynamic/" + postContent.id + "/" + postContent.headerImage}
-                    alt={`A header image for a post with the title: ${postContent.postTitle}`}
+                    src={process.env.AWS_CLOUDFRONT_SERVE_ORIGIN + "/dynamic/" + postContent.id + "/" + postContent.headerFilename}
+                    alt={`A header image for a post with the title: ${postContent.title}`}
                     fill={true}
                     className="flex flex-col align-middle justify-center"
                     style={{objectFit:"cover"}}
@@ -34,12 +34,12 @@ export default async function BlogPostCard( { blogId } : { blogId : string }) {
             <div className="min-h-32 flex flex-col align-middle justify-center">
                 <div className="flex-1 flex flex-col align-middle justify-center">
                     <p className="font-bold text-2xl">
-                        {postContent.postTitle}
+                        {postContent.title}
                     </p>
                 </div>
                 <div className="flex flex-row align-middle justify-center">
                     <p className="font-light text-sm pb-1">
-                        {`Posted: ${postContent.postDate}`}
+                        {`Posted: ${postContent.created}`}
                     </p>
                 </div>
             </div>

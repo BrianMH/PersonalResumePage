@@ -22,6 +22,7 @@ import {TagElement} from "@/lib/definitions";
 import {BlogStatus, submitBlogPost} from "@/lib/clientDatabaseOps";
 import {useToast} from "@/components/ui/use-toast";
 import {ToastAction} from "@/components/ui/toast";
+import {useRouter} from "next/navigation";
 
 /**
  * The extensions used by the relevant editor. This can technically be moved to another file, but since the editor won't
@@ -44,10 +45,13 @@ const extensions = [
     Figure,
 ]
 
-export default function BlogPostEditor({ defaultImagePath, initialContent, postId } :
-        { defaultImagePath : string, initialContent : string, postId? : string }) {
+export default function BlogPostEditor({ defaultImagePath, initialContent, postId, initialTags, initialTitle } :
+        { defaultImagePath : string, initialContent : string, postId? : string, initialTags? : TagElement[], initialTitle?: string}) {
     // toaster
     const { toast } = useToast();
+
+    // router for back-navigation
+    const router = useRouter();
 
     // Here we define some of the references we will need to collect all inputs following the completion of the new post
     // "form"
@@ -58,7 +62,7 @@ export default function BlogPostEditor({ defaultImagePath, initialContent, postI
     const editorHTMLCode = useRef(initialContent);
 
     // and this will allow us to store our tags
-    const [relTags, setRelTags] = useState([] as TagElement[])
+    const [relTags, setRelTags] = useState(initialTags || ([] as TagElement[]));
 
     // and finally our dispatch function with properly bound values
     const initialState : BlogStatus = {message: null}
@@ -79,9 +83,9 @@ export default function BlogPostEditor({ defaultImagePath, initialContent, postI
                             href={nextState.message!}
                         >
                             <ToastAction
-                                altText={"Go to post"}
+                                altText={"View"}
                             >
-                                Go to Post
+                                View
                             </ToastAction>
                         </Link>
                     )
@@ -106,6 +110,7 @@ export default function BlogPostEditor({ defaultImagePath, initialContent, postI
                 titleRef={titleInputRef}
                 imageRef={imageInputRef}
                 defaultImagePath={defaultImagePath}
+                initialTitle={initialTitle}
             />
 
             {/*Horizontal break to mark start of editor*/}
@@ -124,18 +129,16 @@ export default function BlogPostEditor({ defaultImagePath, initialContent, postI
                                 }
                             </div>
                             <div className="grid grid-cols-2 w-full gap-x-3 px-20 justify-items-center">
-                                <Link
-                                    href={"/blog"}
+                                <Button
+                                    type="button"
+                                    variant="destructive"
                                     className="max-w-52 w-full"
+                                    onClick={() => {
+                                        router.back();
+                                    }}
                                 >
-                                    <Button
-                                        type="button"
-                                        variant="destructive"
-                                        className="w-full"
-                                    >
-                                        Cancel
-                                    </Button>
-                                </Link>
+                                    Cancel
+                                </Button>
                                 <Button
                                     type="submit"
                                     variant="outline"

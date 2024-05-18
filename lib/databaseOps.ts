@@ -121,7 +121,7 @@ export async function syncAccessToken(provider: string, providerId: string, acce
 
     // then attempt server communication
     try {
-        const relEndpoint = process.env.BACKEND_API_ROOT + `/users/updateToken`;
+        const relEndpoint = process.env.BACKEND_API_ROOT + "/users/updateToken";
         const response = await makeAPIRequestWithData(relEndpoint, "POST", false, validatedTokenSync.data);
 
         // make sure response is valid
@@ -142,7 +142,7 @@ export async function syncAccessToken(provider: string, providerId: string, acce
             message: "Tokens synced."
         }
     } catch (e) {
-        console.log("Failed to perform token sync: ", e);
+        console.log("Failed to perform token sync.");
         return {
             errors: {},
             message: "Failed to perform token sync. Is the server up?"

@@ -21,9 +21,9 @@ import {BlogStatus} from "@/lib/clientDatabaseOps";
 /**
  * Provides the ability to adjust the header for the new post.
  */
-export default function PostHeaderForm({ blogState, titleRef, imageRef, defaultImagePath } :
+export default function PostHeaderForm({ blogState, titleRef, imageRef, defaultImagePath, initialTitle } :
         { blogState : BlogStatus; titleRef : RefObject<HTMLInputElement>;
-            imageRef :  RefObject<HTMLImageElement>; defaultImagePath : string }) {
+            imageRef :  RefObject<HTMLImageElement>; defaultImagePath : string, initialTitle? : string }) {
     // use to manipulate inputs
     const [imageSrc, setImageSrc] = useState(defaultImagePath);
     const inputUrlRef = useRef<HTMLInputElement>(null);
@@ -33,9 +33,17 @@ export default function PostHeaderForm({ blogState, titleRef, imageRef, defaultI
 
     return (
         <div className="flex flex-col align-middle justify-center pt-10 p-4">
-            <h1 className="text-3xl w-[100%] text-center font-bold">
-                Create New Blog Post
-            </h1>
+            {
+                initialTitle ? (
+                    <h1 className="text-3xl w-[100%] text-center font-bold">
+                        Modifying Post
+                    </h1>
+                ) : (
+                    <h1 className="text-3xl w-[100%] text-center font-bold">
+                        Create New Blog Post
+                    </h1>
+                )
+            }
 
             <Separator className="my-10 bg-black h-1 rounded-full"/>
 
@@ -173,6 +181,7 @@ export default function PostHeaderForm({ blogState, titleRef, imageRef, defaultI
                 className="font-semibold text-3xl text-center mt-6 border-none"
                 aria-placeholder="Post Title"
                 placeholder="Enter A Post Title"
+                defaultValue={initialTitle}
                 contentEditable={true}
             />
             <div className="flex flex-row justify-center align-middle" id="titleError" aria-live="polite" aria-atomic="true">

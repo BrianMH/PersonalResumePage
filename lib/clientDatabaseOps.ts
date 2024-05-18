@@ -2,8 +2,9 @@
 
 import {unstable_noStore as noStore} from "next/dist/server/web/spec-extension/unstable-no-store";
 import {auth} from "@/auth";
-import {TagElement} from "@/lib/definitions";
+import {BlogPost, TagElement} from "@/lib/definitions";
 import {z} from "zod";
+import {generateAPIContentWithMappings} from "@/lib/helper";
 
 /***********************************************************************
  *                       FETCH OPERATION
@@ -28,15 +29,18 @@ export async function makeLocalRequestWithData(url: string, requestType: Request
 
     // access token will be attached to all requests but only validated on certain paths
     let accessTokHeader = null;
+    let refererHeader = null;
     if(asUser) {
         const session = await auth();
         accessTokHeader = session ? {"Authorization": `Bearer ${session?.user?.access_token}`} : null;
+        refererHeader = session ? {"Referer": `${session.user.referer}`} : null;
     }
 
     let response = await fetch(url, {
         method: requestType,
         headers: {"Content-Type": "application/json",
-            ...accessTokHeader}, // Add our bearer token if it exists in the session
+            ...accessTokHeader, // Add our bearer token if it exists in the session
+            ...refererHeader}, // and our referer as needed
         ...(data && {body: JSON.stringify(data)})
     });
 
@@ -59,8 +63,10 @@ export type BlogStatus = {
         id?: string[];
         postTags?: string[];
         headerUrl?: string[];
+        headerFilename?: string[];
         title?: string[];
         content?: string[];
+        imageMappings?: string[];
     },
     message?: string | null;
 }
@@ -72,7 +78,7 @@ const BlogTag = z.object({
     })
 })
 
-const BlogPost = z.object({
+const BlogPostSchema = z.object({
     id: z.string({
         required_error: "Post must have a valid id",
     }),
@@ -84,6 +90,9 @@ const BlogPost = z.object({
     }).refine(inputUrl => {
         return inputUrl !== (process.env.AWS_CLOUDFRONT_SERVE_ORIGIN + "/static/" + "dummyimage.png");
     }, {message: "Passed URL cannot be the base provided URL."}),
+    headerFilename: z.string({
+        required_error: "Header image filename cannot be empty.",
+    }),
     title: z.string({
         required_error: "A blog post must have a valid non-null title",
     }).min(4, {
@@ -91,11 +100,20 @@ const BlogPost = z.object({
     }),
     content: z.string({
         required_error: "A blog's content cannot be empty.",
-    })
+    }),
+    imageMappings: z.record(
+        z.string(),
+        z.string().url({
+            message: "Value must have a valid URL entity"
+        }),
+        {required_error: "There must be at least 1 mapping corresponding to the header image."}
+    ),
 })
 
 // And now our blog post update schemas
-const NewBlogPostSchema = BlogPost.omit({id: true});
+const NewBlogPostSchema = BlogPostSchema.omit({id: true}).refine((data) => {
+    return data.headerUrl.endsWith(data.headerFilename);
+}, {message: "Header filename must be a substring of the header URL."});
 
 /**
  * Make a request to the backend for the creation of a new post. Performs some simple validation before being
@@ -107,12 +125,19 @@ const NewBlogPostSchema = BlogPost.omit({id: true});
  * @param postTags
  */
 export async function submitBlogPost(blogPostTitle : string, blogPostContent : string, blogHeaderRef : string, postTags : TagElement[]) : Promise<BlogStatus> {
+    // In order for the upload to work, we need to process the images before we can send it to the backend. The REST API
+    // requests the images in the object as just the filenames that would be used in the key for the bucket, and instead
+    // the imageMappings map within the request body would allow the API to upload the requested images.
+    const updatedValues = await generateAPIContentWithMappings(blogPostContent, blogHeaderRef);
+
     // validate our inputs first
     const validatedNewBlogPost = NewBlogPostSchema.safeParse({
         headerUrl: blogHeaderRef,
+        headerFilename: updatedValues.postHeader,
         title: blogPostTitle,
-        content: blogPostContent,
+        content: updatedValues.postContent,
         postTags: postTags.map(tag => ({id: (tag.id === tag.tagName) ? null : tag.id, tagName: tag.tagName})),
+        imageMappings: updatedValues.imgMaps,
     })
 
     if(!validatedNewBlogPost.success) {
@@ -125,15 +150,23 @@ export async function submitBlogPost(blogPostTitle : string, blogPostContent : s
 
     // then attempt to communicate with backend to create the post
     try {
-        console.log(validatedNewBlogPost.data);
+        const relEndpoint = process.env.BACKEND_API_ROOT + "/blog/posts/new";
+        const response = await makeLocalRequestWithData(relEndpoint, "POST", false, validatedNewBlogPost.data, true);
+
+        if(!response.ok)
+            throw response;
+
+        // and try to parse the json response from the server
+        // since this REST API returns the new post along with ids, we can simply pass the id itself back to the front-end as proof of creation
+        const jsonReturn : BlogPost = await response.json();
+        return {
+            message: `/blog/${jsonReturn.id}`
+        }
     } catch (e) {
         console.log("Exception encountered during post creation.")
         return {
             errors: {},
-            message: "Unknown error encountered. Is the server up?"
+            message: "Unknown error encountered curing creation. Is the server up?"
         }
     }
-
-    // successful operation. no message needed
-    return {message: "/blog/1"}
 }

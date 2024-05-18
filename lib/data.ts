@@ -10,15 +10,13 @@ import {
 } from "@/lib/definitions";
 import {
     DummyEducationEntries,
-    DummyExperienceEntries, DummyPostData,
+    DummyExperienceEntries,
     DummyProjectData,
-    DummySoftSkillData, DummyTagData,
+    DummySoftSkillData,
     DummyTechnicalGuageData
 } from "@/lib/dummyData";
 import {NUM_BLOG_POSTS} from "@/lib/consts";
-import {Profile} from "next-auth";
-import {unstable_noStore as noStore} from "next/cache";
-import {auth} from "@/auth";
+import {makeLocalRequestWithData} from "@/lib/clientDatabaseOps";
 
 /**
  * This is where all the database retrievals will happen.
@@ -77,46 +75,84 @@ export async function fetchExperienceEntries() : Promise<ExperienceEntry[]> {
     return expData;
 }
 
-export async function fetchNumPages(query: string) : Promise<number> {
-    // first load in our data
-    const numPages = Promise.resolve(1);
+export async function fetchNumPages(query: string, pageSize: number = NUM_BLOG_POSTS) : Promise<number> {
+    try {
+        const relEndpoint = process.env.BACKEND_API_ROOT + `/blog/posts/paged/${pageSize}?tagName=${query}`;
+        const response = await makeLocalRequestWithData(relEndpoint, "GET", false);
 
-    return numPages;
+        if(!response.ok)
+            throw response.status;
+
+        // then process it
+        return response.json() as Promise<number>;
+    } catch (e) {
+        console.log(`Error encountered on post fetch : ${e}`);
+        return 1;
+    }
 }
 
-export async function fetchPostById(id: string) : Promise<BlogPost | undefined> {
-    // fetch post from database
-    const relevantPost = Promise.resolve(DummyPostData.find((post) => post.id === id));
+export async function fetchPostById(id: string) : Promise<BlogPost | null> {
+    try {
+        const relEndpoint = process.env.BACKEND_API_ROOT + `/blog/posts/${id}`;
+        const response = await makeLocalRequestWithData(relEndpoint, "GET", false);
 
-    // and then return
-    return relevantPost;
+        if(!response.ok)
+            throw response.status;
+
+        // then process the json to get our actual blog post
+        return response.json() as Promise<BlogPost>;
+    } catch (e) {
+        console.log(`Error encountered on post fetch : ${e}`);
+        return null;
+    }
 }
 
-export async function fetchPostPreviewById(id: string) : Promise<BlogPreview | undefined> {
-    // fetch preview from database
-    const relevantPost = Promise.resolve(DummyPostData.map(post => ({
-        id: post.id,
-        postTitle: post.postTitle,
-        headerImage: post.headerImage,
-        postDate: post.postDate,
-    })).find((post) => post.id === id));
+export async function fetchPostPreviewById(id: string) : Promise<BlogPreview | null> {
+    try {
+        const relEndpoint = process.env.BACKEND_API_ROOT + `/blog/posts/${id}/preview`;
+        const response = await makeLocalRequestWithData(relEndpoint, "GET", false);
 
-    // and then return our preview
-    return relevantPost;
+        if(!response.ok)
+            throw response.status;
+
+        // then process the json to get the preview
+        return response.json() as Promise<BlogPreview>;
+    } catch (e) {
+        console.log(`Error encountered on post preview fetch : ${e}`);
+        return null;
+    }
 }
 
 export async function fetchNextNPPostIds(query: string, currentPage: number, pageSize: number = NUM_BLOG_POSTS) : Promise<IdWrapper[]> {
-    // first load our data in
-    const nextNPosts = Promise.resolve(DummyPostData.map(post => ({
-        id: post.id,
-    })));
+    try {
+        const relEndpoint = process.env.BACKEND_API_ROOT + `/blog/posts/paged/${pageSize}/${currentPage-1}?tagName=${query}`
+        const response = await makeLocalRequestWithData(relEndpoint, "GET", false);
 
-    return nextNPosts;
+        if(!response.ok)
+            throw response.status;
+
+        // then proess the json
+        return response.json() as Promise<IdWrapper[]>;
+    } catch (e) {
+        console.log(`Error encountered on post id fetch : ${e}`);
+        return [
+            {id: "1"}
+        ];
+    }
 }
 
-export async function fetchAllTags() : Promise<TagElement[]> {
-    // first load our data in
-    const allTags = Promise.resolve(DummyTagData);
+export async function fetchAllTags() : Promise<TagElement[] | null> {
+    try {
+        const relEndpoint = process.env.BACKEND_API_ROOT + '/blog/tags/all';
+        const response = await makeLocalRequestWithData(relEndpoint, "GET", false);
 
-    return allTags;
+        if(!response.ok)
+            throw response.status
+
+        // and then process to get the tags
+        return response.json() as Promise<TagElement[]>;
+    } catch (e) {
+        console.log(`Error encountered on tag fetch : ${e}`);
+        return null;
+    }
 }

@@ -98,17 +98,18 @@ export type TagElement = {
 // previews aren't dependent on the content as no content is shown from the front page
 export type BlogPreview = {
     id: string;
-    postTitle: string;
-    headerImage: string;
-    postDate: string;
+    title: string;
+    headerFilename: string;
+    created: string;
 }
 
 export type BlogPost = {
     id: string;
-    postTitle: string;
-    headerImage: string;
+    title: string;
+    headerFilename: string;
     content: string;
-    postDate: string;
+    created: string;
+    updated: string;
     postTags: TagElement[];
 }
 
