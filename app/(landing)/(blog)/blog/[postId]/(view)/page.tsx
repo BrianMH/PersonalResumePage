@@ -31,7 +31,12 @@ export default async function BlogPostPage({ params } : { params : { postId : st
             <div className="bg-card w-full lg:max-w-[1000px]">
                 {/*Our post header (along with title)*/}
                 <div className="flex flex-col align-middle justify-center px-10 pt-10">
-                    <p className="text-sm font-light">Posted: {relPost.created}</p>
+                    {
+                        (relPost.created === relPost.updated) ?
+                            <p className="text-sm font-light">Posted: {(new Date(relPost.created)).toLocaleString()}</p>
+                                :
+                            <p className="text-sm font-light">Updated: {(new Date(relPost.updated)).toLocaleString()}</p>
+                    }
 
                     <Image
                         src={process.env.AWS_CLOUDFRONT_SERVE_ORIGIN + "/dynamic/" + relPost.id + "/" + relPost.headerFilename}

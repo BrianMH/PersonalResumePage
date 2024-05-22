@@ -5,6 +5,7 @@ import {auth} from "@/auth";
 import {BlogPost, TagElement} from "@/lib/definitions";
 import {z} from "zod";
 import {generateAPIContentWithMappings} from "@/lib/helper";
+import {revalidatePath, revalidateTag} from "next/cache";
 
 /***********************************************************************
  *                       FETCH OPERATION
@@ -72,14 +73,14 @@ export type BlogStatus = {
 }
 
 const BlogTag = z.object({
-    id: z.string().nullable(),  // this is mostly used for rendering, so we can largely ignore its presence
+    id: z.coerce.string().nullable(),  // this is mostly used for rendering, so we can largely ignore its presence
     tagName: z.string({
         required_error: "Tag must have some valid non-null string value associated."
     })
 })
 
 const BlogPostSchema = z.object({
-    id: z.string({
+    id: z.coerce.string({
         required_error: "Post must have a valid id",
     }),
     postTags: z.array(BlogTag).optional(),
@@ -114,44 +115,61 @@ const BlogPostSchema = z.object({
 const NewBlogPostSchema = BlogPostSchema.omit({id: true}).refine((data) => {
     return data.headerUrl.endsWith(data.headerFilename);
 }, {message: "Header filename must be a substring of the header URL."});
+const UpdateBlogPostSchema = BlogPostSchema.refine((data) => {
+    return data.headerUrl.endsWith(data.headerFilename);
+})
 
 /**
- * Make a request to the backend for the creation of a new post. Performs some simple validation before being
+ * Make a request to the backend for the creation or update of a new post. Performs some simple validation before being
  * sent to the backend.
  *
  * @param blogPostTitle
  * @param blogPostContent
  * @param blogHeaderRef
  * @param postTags
+ * @param blogId
  */
-export async function submitBlogPost(blogPostTitle : string, blogPostContent : string, blogHeaderRef : string, postTags : TagElement[]) : Promise<BlogStatus> {
+export async function submitBlogPost(blogPostTitle : string, blogPostContent : string, blogHeaderRef : string, postTags : TagElement[], blogId? : String) : Promise<BlogStatus> {
     // In order for the upload to work, we need to process the images before we can send it to the backend. The REST API
     // requests the images in the object as just the filenames that would be used in the key for the bucket, and instead
     // the imageMappings map within the request body would allow the API to upload the requested images.
     const updatedValues = await generateAPIContentWithMappings(blogPostContent, blogHeaderRef);
 
     // validate our inputs first
-    const validatedNewBlogPost = NewBlogPostSchema.safeParse({
-        headerUrl: blogHeaderRef,
-        headerFilename: updatedValues.postHeader,
-        title: blogPostTitle,
-        content: updatedValues.postContent,
-        postTags: postTags.map(tag => ({id: (tag.id === tag.tagName) ? null : tag.id, tagName: tag.tagName})),
-        imageMappings: updatedValues.imgMaps,
-    })
+    let validatedPost;
+    if(!blogId) {
+        validatedPost = NewBlogPostSchema.safeParse({
+            headerUrl: blogHeaderRef,
+            headerFilename: updatedValues.postHeader,
+            title: blogPostTitle,
+            content: updatedValues.postContent,
+            postTags: postTags.map(tag => ({id: (tag.id === tag.tagName) ? null : tag.id, tagName: tag.tagName})),
+            imageMappings: updatedValues.imgMaps,
+        });
+    } else {
+        validatedPost = UpdateBlogPostSchema.safeParse({
+            id: blogId,
+            headerUrl: blogHeaderRef,
+            headerFilename: updatedValues.postHeader,
+            title: blogPostTitle,
+            content: updatedValues.postContent,
+            postTags: postTags.map(tag => ({id: (tag.id === tag.tagName) ? null : tag.id, tagName: tag.tagName})),
+            imageMappings: updatedValues.imgMaps,
+        });
+    }
 
-    if(!validatedNewBlogPost.success) {
-        console.log(validatedNewBlogPost.error.flatten())
+    if(!validatedPost.success) {
+        console.log(validatedPost.error.flatten());
         return {
-            errors: validatedNewBlogPost.error.flatten().fieldErrors,
+            errors: validatedPost.error.flatten().fieldErrors,
             message: "Failed to create new post."
-        }
+        };
     }
 
     // then attempt to communicate with backend to create the post
     try {
-        const relEndpoint = process.env.BACKEND_API_ROOT + "/blog/posts/new";
-        const response = await makeLocalRequestWithData(relEndpoint, "POST", false, validatedNewBlogPost.data, true);
+        const relEndpoint = process.env.BACKEND_API_ROOT! + ((blogId) ? `/blog/posts/${blogId}` : "/blog/posts/new");
+        const response = await makeLocalRequestWithData(relEndpoint, "POST", false, validatedPost.data, true);
 
         if(!response.ok)
             throw response;
@@ -159,14 +177,17 @@ export async function submitBlogPost(blogPostTitle : string, blogPostContent : s
         // and try to parse the json response from the server
         // since this REST API returns the new post along with ids, we can simply pass the id itself back to the front-end as proof of creation
         const jsonReturn : BlogPost = await response.json();
+
+        // and revalidate both the post itself and values touched by the blog preview page
+        revalidatePath('/blog')
+        revalidatePath(`/blog/${jsonReturn.id}`);
         return {
             message: `/blog/${jsonReturn.id}`
-        }
+        };
     } catch (e) {
-        console.log("Exception encountered during post creation.")
         return {
             errors: {},
-            message: "Unknown error encountered curing creation. Is the server up?"
-        }
+            message: `Unknown error encountered curing ${(blogId)? "updating" : "creation"}. Is the server up?`
+        };
     }
 }

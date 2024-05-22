@@ -26,7 +26,7 @@ export default async function BlogPostCard( { blogId } : { blogId : string }) {
                     alt={`A header image for a post with the title: ${postContent.title}`}
                     fill={true}
                     className="flex flex-col align-middle justify-center"
-                    style={{objectFit:"cover"}}
+                    style={{objectFit: "cover"}}
                 />
             </div>
 

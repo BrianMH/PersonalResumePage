@@ -8,6 +8,8 @@
 import {fetchNextNPPostIds, fetchNumPages} from "@/lib/data";
 import BlogPostCard from "@/components/blog-post-preview";
 import PaginationToN from "@/components/pagination-with-max-n";
+import {Suspense} from "react";
+import {Skeleton} from "@/components/ui/skeleton";
 
 interface SearchParamType {
     searchParams?: {
@@ -43,10 +45,14 @@ export default async function BlogPage({ searchParams } : SearchParamType ) {
                     {currentPostIds.map(idWrapper => {
 
                         return (
-                            <BlogPostCard
+                            <Suspense
                                 key={idWrapper.id}
-                                blogId={idWrapper.id}
-                            />
+                                fallback={<Skeleton className="h-96 rounded-2xl" />}
+                            >
+                                <BlogPostCard
+                                    blogId={idWrapper.id}
+                                />
+                            </Suspense>
                         )
                     })}
                 </div>

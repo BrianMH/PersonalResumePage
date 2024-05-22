@@ -6,7 +6,7 @@ import {
     ExperienceEntry,
     GaugeValue,
     IdWrapper,
-    ProjectBrief, ProjectEntry, Role, TagElement
+    ProjectBrief, ProjectEntry, TagElement
 } from "@/lib/definitions";
 import {
     DummyEducationEntries,
@@ -17,6 +17,33 @@ import {
 } from "@/lib/dummyData";
 import {NUM_BLOG_POSTS} from "@/lib/consts";
 import {makeLocalRequestWithData} from "@/lib/clientDatabaseOps";
+import {unstable_noStore as noStore} from "next/dist/server/web/spec-extension/unstable-no-store";
+import {auth} from "@/auth";
+
+/***********************************************************************
+ *                       FETCH OPERATION
+ * *********************************************************************/
+/**
+ * We already have two no_cache operations available (one for API and one for USER access). However,
+ * this function is only used to make "GET" requests that prompt for JSON returns
+ * that are subsequently cached by the server. This is useful as it will be used later on in
+ * order to allow for custom invalidations and only used for non-authenticated paths in the API.
+ * @param url
+ * @param tagList
+ */
+export async function makeCachedGetRequest(url: string, tagList?: string[]) {
+    let response = await fetch(url, {
+        method: "GET",
+        headers: {"Content-Type": "application/json"},
+        ...(tagList && { next: { tags: tagList } }),
+    });
+
+    return response;
+}
+
+/***********************************************************************
+ *                       DATA OPERATIONS
+ * *********************************************************************/
 
 /**
  * This is where all the database retrievals will happen.
@@ -78,7 +105,7 @@ export async function fetchExperienceEntries() : Promise<ExperienceEntry[]> {
 export async function fetchNumPages(query: string, pageSize: number = NUM_BLOG_POSTS) : Promise<number> {
     try {
         const relEndpoint = process.env.BACKEND_API_ROOT + `/blog/posts/paged/${pageSize}?tagName=${query}`;
-        const response = await makeLocalRequestWithData(relEndpoint, "GET", false);
+        const response = await makeCachedGetRequest(relEndpoint, ['blogPreview']);
 
         if(!response.ok)
             throw response.status;
@@ -91,10 +118,14 @@ export async function fetchNumPages(query: string, pageSize: number = NUM_BLOG_P
     }
 }
 
+/**
+ * In order to provide a chance to cache, we have to use the built-in fetch operation without the caching prevention.
+ * @param id
+ */
 export async function fetchPostById(id: string) : Promise<BlogPost | null> {
     try {
         const relEndpoint = process.env.BACKEND_API_ROOT + `/blog/posts/${id}`;
-        const response = await makeLocalRequestWithData(relEndpoint, "GET", false);
+        const response = await makeCachedGetRequest(relEndpoint, ['blogPost']);
 
         if(!response.ok)
             throw response.status;
@@ -110,7 +141,7 @@ export async function fetchPostById(id: string) : Promise<BlogPost | null> {
 export async function fetchPostPreviewById(id: string) : Promise<BlogPreview | null> {
     try {
         const relEndpoint = process.env.BACKEND_API_ROOT + `/blog/posts/${id}/preview`;
-        const response = await makeLocalRequestWithData(relEndpoint, "GET", false);
+        const response = await makeCachedGetRequest(relEndpoint, ['blogPreview']);
 
         if(!response.ok)
             throw response.status;
@@ -126,18 +157,37 @@ export async function fetchPostPreviewById(id: string) : Promise<BlogPreview | n
 export async function fetchNextNPPostIds(query: string, currentPage: number, pageSize: number = NUM_BLOG_POSTS) : Promise<IdWrapper[]> {
     try {
         const relEndpoint = process.env.BACKEND_API_ROOT + `/blog/posts/paged/${pageSize}/${currentPage-1}?tagName=${query}`
-        const response = await makeLocalRequestWithData(relEndpoint, "GET", false);
+        const response = await makeCachedGetRequest(relEndpoint, ['blogPreview']);
 
         if(!response.ok)
             throw response.status;
 
-        // then proess the json
+        // then process the json
         return response.json() as Promise<IdWrapper[]>;
     } catch (e) {
         console.log(`Error encountered on post id fetch : ${e}`);
         return [
             {id: "1"}
         ];
+    }
+}
+
+/**
+ * Unlike the above fetch function, this returns a list of ALL post ids that are available.
+ */
+export async function fetchAllPostIds() : Promise<IdWrapper[]> {
+    try {
+        const relEndpoint = process.env.BACKEND_API_ROOT + '/blog/posts';
+        const response = await makeLocalRequestWithData(relEndpoint, "GET", false);
+
+        if(!response.ok)
+            throw response.json();
+
+        // then process json
+        return response.json() as Promise<IdWrapper[]>;
+    } catch (e) {
+        console.log(`Error encountered on all post ids fetch : ${e}`);
+        return [];
     }
 }
 

@@ -90,7 +90,7 @@ const tokenSyncSchema = z.object({
     provider: z.string({
         required_error: "Provider must be a valid string."
     }),
-    provider_account_id: z.string({
+    providerAccountId: z.string({
         required_error: "Provider account id cannot be empty."
     }),
 })
@@ -108,7 +108,7 @@ export async function syncAccessToken(provider: string, providerId: string, acce
         access_token: accessToken,
         expires_at: expiry,
         provider: provider,
-        provider_account_id: providerId,
+        providerAccountId: providerId,
     })
 
     if(!validatedTokenSync.success) {
