@@ -29,6 +29,7 @@ export default function MenuBar() {
     return (
         <div className="flex flex-row justify-center align-middle flex-wrap gap-x-1 gap-y-1 pb-6">
             <Button
+                type="button"
                 variant="outline"
                 onClick={() => editor.chain().focus().toggleBold().run()}
                 disabled={
@@ -43,6 +44,7 @@ export default function MenuBar() {
                 <BoldIcon className="text-foreground"/>
             </Button>
             <Button
+                type="button"
                 variant="outline"
                 onClick={() => editor.chain().focus().toggleItalic().run()}
                 disabled={
@@ -57,6 +59,7 @@ export default function MenuBar() {
                 <ItalicIcon className="text-foreground"/>
             </Button>
             <Button
+                type="button"
                 variant="outline"
                 onClick={() => editor.chain().focus().toggleStrike().run()}
                 disabled={
@@ -71,6 +74,7 @@ export default function MenuBar() {
                 <StrikethroughIcon className="text-foreground"/>
             </Button>
             <Button
+                type="button"
                 variant="outline"
                 onClick={() => editor.chain().focus().toggleCode().run()}
                 disabled={
@@ -85,18 +89,21 @@ export default function MenuBar() {
                 <Code2Icon className="text-foreground"/>
             </Button>
             <Button
+                type="button"
                 variant="outline"
                 onClick={() => editor.chain().focus().unsetAllMarks().run()}
             >
                 <p>Clear Marks</p>
             </Button>
             <Button
+                type="button"
                 variant="outline"
                 onClick={() => editor.chain().focus().clearNodes().run()}
             >
                 <p>Clear Nodes</p>
             </Button>
             <Button
+                type="button"
                 variant="outline"
                 onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
                 className={`${editor.isActive('heading', { level: 1 }) ? 'bg-blend-color bg-zinc-300' : ''}`}
@@ -104,6 +111,7 @@ export default function MenuBar() {
                 <Heading1Icon className="text-foreground"/>
             </Button>
             <Button
+                type="button"
                 variant="outline"
                 onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
                 className={`${editor.isActive('heading', { level: 2 }) ? 'bg-blend-color bg-zinc-300' : ''}`}
@@ -111,6 +119,7 @@ export default function MenuBar() {
                 <Heading2Icon className="text-foreground"/>
             </Button>
             <Button
+                type="button"
                 variant="outline"
                 onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
                 className={`${editor.isActive('heading', { level: 3 }) ? 'bg-blend-color bg-zinc-300' : ''}`}
@@ -118,6 +127,7 @@ export default function MenuBar() {
                 <Heading3Icon className="text-foreground"/>
             </Button>
             <Button
+                type="button"
                 variant="outline"
                 onClick={() => editor.chain().focus().toggleHeading({ level: 4 }).run()}
                 className={`${editor.isActive('heading', { level: 4 }) ? 'bg-blend-color bg-zinc-300' : ''}`}
@@ -125,6 +135,7 @@ export default function MenuBar() {
                 <Heading4Icon className="text-foreground"/>
             </Button>
             <Button
+                type="button"
                 variant="outline"
                 onClick={() => editor.chain().focus().toggleHeading({ level: 5 }).run()}
                 className={`${editor.isActive('heading', { level: 5 }) ? 'bg-blend-color bg-zinc-300' : ''}`}
@@ -132,6 +143,7 @@ export default function MenuBar() {
                 <Heading5Icon className="text-foreground"/>
             </Button>
             <Button
+                type="button"
                 variant="outline"
                 onClick={() => editor.chain().focus().toggleHeading({ level: 6 }).run()}
                 className={`${editor.isActive('heading', { level: 6 }) ? 'bg-blend-color bg-zinc-300' : ''}`}
@@ -139,6 +151,7 @@ export default function MenuBar() {
                 <Heading6Icon className="text-foreground"/>
             </Button>
             <Button
+                type="button"
                 variant="outline"
                 onClick={() => editor.chain().focus().toggleBulletList().run()}
                 className={`${editor.isActive('bulletList') ? 'bg-blend-color bg-zinc-300' : ''}`}
@@ -146,6 +159,7 @@ export default function MenuBar() {
                 <ListIcon className="text-foreground"/>
             </Button>
             <Button
+                type="button"
                 variant="outline"
                 onClick={() => editor.chain().focus().toggleOrderedList().run()}
                 className={`${editor.isActive('orderedList') ? 'bg-blend-color bg-zinc-300' : ''}`}
@@ -153,6 +167,7 @@ export default function MenuBar() {
                 <ListOrderedIcon className="text-foreground"/>
             </Button>
             <Button
+                type="button"
                 variant="outline"
                 onClick={() => editor.chain().focus().toggleCodeBlock().run()}
                 className={`${editor.isActive('codeBlock') ? 'bg-blend-color bg-zinc-300' : ''}`}
@@ -160,6 +175,7 @@ export default function MenuBar() {
                 <CodeSquareIcon className="text-foreground"/>
             </Button>
             <Button
+                type="button"
                 variant="outline"
                 onClick={() => editor.chain().focus().toggleBlockquote().run()}
                 className={`${editor.isActive('blockquote') ? 'bg-blend-color bg-zinc-300' : ''}`}
@@ -167,18 +183,21 @@ export default function MenuBar() {
                 <MessageSquareQuoteIcon className="text-foreground"/>
             </Button>
             <Button
+                type="button"
                 variant="outline"
                 onClick={() => editor.chain().focus().setHorizontalRule().run()}
             >
                 <SeparatorHorizontalIcon className="text-foreground"/>
             </Button>
             <Button
+                type="button"
                 variant="outline"
                 onClick={() => editor.chain().focus().setHardBreak().run()}
             >
                 <p>{"<br>"}</p>
             </Button>
             <Button
+                type="button"
                 variant="outline"
                 onClick={() => editor.chain().focus().undo().run()}
                 disabled={
@@ -192,6 +211,7 @@ export default function MenuBar() {
                 <Undo2Icon />
             </Button>
             <Button
+                type="button"
                 variant="outline"
                 onClick={() => editor.chain().focus().redo().run()}
                 disabled={
@@ -205,6 +225,7 @@ export default function MenuBar() {
                 <Redo2Icon />
             </Button>
             <Button
+                type="button"
                 variant="outline"
                 onClick={() => editor.chain().focus().toggleSectionBlock().run()}
                 className={`${editor.isActive('sectionBlock') ? 'bg-blend-color bg-zinc-300' : ''}`}
@@ -214,6 +235,7 @@ export default function MenuBar() {
             <Popover>
                 <PopoverTrigger asChild>
                     <Button
+                        type="button"
                         variant="outline"
                     >
                         <p>Figure</p>
@@ -258,6 +280,7 @@ export default function MenuBar() {
                         </div>
                         <div className="flex flex-row justify-center">
                             <Button
+                                type="button"
                                 className="bg-card text-card-foreground border-black border-[1px] hover:bg-accent hover:text-accent-foreground"
                                 onClick={() => {
                                     // first gather our elements
