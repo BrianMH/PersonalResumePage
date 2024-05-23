@@ -194,7 +194,7 @@ export async function fetchAllPostIds() : Promise<IdWrapper[]> {
 export async function fetchAllTags() : Promise<TagElement[] | null> {
     try {
         const relEndpoint = process.env.BACKEND_API_ROOT + '/blog/tags/all';
-        const response = await makeLocalRequestWithData(relEndpoint, "GET", false);
+        const response = await makeCachedGetRequest(relEndpoint, ["blogTag"]);
 
         if(!response.ok)
             throw response.status

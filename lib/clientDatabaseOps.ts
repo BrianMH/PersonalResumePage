@@ -2,7 +2,7 @@
 
 import {unstable_noStore as noStore} from "next/dist/server/web/spec-extension/unstable-no-store";
 import {auth} from "@/auth";
-import {BlogPost, TagElement} from "@/lib/definitions";
+import {BlogPost, ServerStatusResponse, TagElement} from "@/lib/definitions";
 import {z} from "zod";
 import {generateAPIContentWithMappings} from "@/lib/helper";
 import {revalidatePath, revalidateTag} from "next/cache";
@@ -188,6 +188,46 @@ export async function submitBlogPost(blogPostTitle : string, blogPostContent : s
         return {
             errors: {},
             message: `Unknown error encountered curing ${(blogId)? "updating" : "creation"}. Is the server up?`
+        };
+    }
+}
+
+/**
+ * Performs deletion of a tagId given the string ID of the tag
+ * @param tagId
+ */
+export async function deleteTagById(tagId: string): Promise<ServerStatusResponse> {
+    try {
+        const relEndpoint = process.env.BACKEND_API_ROOT + `/blog/tags/${tagId}`;
+        const response = await makeLocalRequestWithData(relEndpoint, "DELETE", false, null, true);
+
+        // revalidate tags and return
+        revalidateTag("blogTag");
+        return response.json();
+    } catch (e) {
+        console.log("Error encountered during tag deletion.");
+        return {
+            success: false,
+            statusCode: 400,
+            message: "Unknown error encountered."
+        };
+    }
+}
+
+export async function deletePostById(postId: string): Promise<ServerStatusResponse> {
+    try {
+        const relEndpoint = process.env.BACKEND_API_ROOT + `/blog/posts/${postId}`;
+        const response = await makeLocalRequestWithData(relEndpoint, "DELETE", false, null, true);
+
+        // revalidate path and return
+        revalidatePath("/blog");
+        return response.json();
+    } catch (e) {
+        console.log("Error encountered during post deletion");
+        return {
+            success: false,
+            statusCode: 400,
+            message: "Unknown error encountered."
         };
     }
 }

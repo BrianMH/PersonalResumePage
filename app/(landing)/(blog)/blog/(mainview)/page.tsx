@@ -10,6 +10,7 @@ import BlogPostCard from "@/components/blog-post-preview";
 import PaginationToN from "@/components/pagination-with-max-n";
 import {Suspense} from "react";
 import {Skeleton} from "@/components/ui/skeleton";
+import {auth} from "@/auth";
 
 interface SearchParamType {
     searchParams?: {
@@ -47,7 +48,7 @@ export default async function BlogPage({ searchParams } : SearchParamType ) {
                         return (
                             <Suspense
                                 key={idWrapper.id}
-                                fallback={<Skeleton className="h-96 rounded-2xl" />}
+                                fallback={<Skeleton className="h-96 w-full rounded-2xl" />}
                             >
                                 <BlogPostCard
                                     blogId={idWrapper.id}
