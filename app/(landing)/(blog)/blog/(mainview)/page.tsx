@@ -11,6 +11,8 @@ import PaginationToN from "@/components/pagination-with-max-n";
 import {Suspense} from "react";
 import {Skeleton} from "@/components/ui/skeleton";
 import {auth} from "@/auth";
+import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
+import {AlertCircle} from "lucide-react";
 
 interface SearchParamType {
     searchParams?: {
@@ -26,6 +28,36 @@ export default async function BlogPage({ searchParams } : SearchParamType ) {
     const currentPage = Number(searchParams?.page) || 1;
     const totalPages = await fetchNumPages(query);
     const currentPostIds = await fetchNextNPPostIds(query, currentPage);
+
+    // if we have -1 pages and nothing within our current post ids, warn of the server being down
+    if(totalPages === -1 && currentPostIds.length === 0) {
+        return (
+            <main className="flex-1 flex mb-6 p-6 min-w-screen max-w-full flex-col">
+                <div className="h-fit flex flex-row align-middle justify-center">
+                    <div className="w-fit flex flex-col bg-card p-6 text-center shadow-lg mb-12">
+                        <h1 className="text-2xl">
+                            Personal Blog
+                        </h1>
+                        <h4 className="font-light">
+                            A collection of random thoughts and/or project progress reports...
+                        </h4>
+                    </div>
+                </div>
+
+                <div className="h-fit flex flex-row align-middle justify-center">
+                    <div className="h-fit flex flex-row align-middle justify-center">
+                        <Alert variant="destructive" className="bg-card">
+                            <AlertCircle className="h-4 w-4"/>
+                            <AlertTitle>Error</AlertTitle>
+                            <AlertDescription>
+                                Backend blog server is down. Please be patient as the backend could take some time to fix.
+                            </AlertDescription>
+                        </Alert>
+                    </div>
+                </div>
+            </main>
+    )
+    }
 
     return (
         <main className="flex-1 flex mb-6 p-6 min-w-screen max-w-full flex-col">

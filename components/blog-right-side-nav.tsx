@@ -19,7 +19,7 @@ export default async function RightBlogNav() {
     const receivedTags = await fetchAllTags();
 
     if(!receivedTags)
-        throw Error("Invalid tag return. Is the server down?");
+        return (<></>)
 
     // we randomly select colors for the tags according to their ids
     const tagsWithColors = receivedTags.map(curTag => {

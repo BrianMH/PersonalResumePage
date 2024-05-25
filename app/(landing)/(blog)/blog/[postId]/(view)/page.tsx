@@ -14,6 +14,7 @@ import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/compon
 import {Button} from "@/components/ui/button";
 import Link from "next/link";
 import {EditIcon} from "lucide-react";
+import UserFormattedTime from "@/components/ui/user-time";
 
 export default async function BlogPostPage({ params } : { params : { postId : string } }) {
     // fetch our given main post
@@ -33,9 +34,9 @@ export default async function BlogPostPage({ params } : { params : { postId : st
                 <div className="flex flex-col align-middle justify-center px-10 pt-10">
                     {
                         (relPost.created === relPost.updated) ?
-                            <p className="text-sm font-light">Posted: {(new Date(relPost.created)).toLocaleString()}</p>
+                            <p className="text-sm font-light">{"Posted: "} <UserFormattedTime setTime={relPost.created} /></p>
                                 :
-                            <p className="text-sm font-light">Updated: {(new Date(relPost.updated)).toLocaleString()}</p>
+                            <p className="text-sm font-light">{"Updated: "} <UserFormattedTime setTime={relPost.updated} /></p>
                     }
 
                     <Image

@@ -18,6 +18,7 @@ import {
     AlertDialogTrigger
 } from "@/components/ui/alert-dialog";
 import {Button} from "@/components/ui/button";
+import UserFormattedTime from "@/components/ui/user-time";
 
 export default async function BlogPostCard( { blogId } : { blogId : string }) {
     // get our session to allow for post deletion as well
@@ -110,7 +111,7 @@ export default async function BlogPostCard( { blogId } : { blogId : string }) {
                     </div>
                     <div className="flex flex-row align-middle justify-center">
                         <p className="font-light text-sm pb-1">
-                            {`Posted: ${postContent.created}`}
+                            {"Posted: "} <UserFormattedTime setTime={postContent.created} />
                         </p>
                     </div>
                 </div>

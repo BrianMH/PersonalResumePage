@@ -19,6 +19,7 @@ import {NUM_BLOG_POSTS} from "@/lib/consts";
 import {makeLocalRequestWithData} from "@/lib/clientDatabaseOps";
 import {unstable_noStore as noStore} from "next/dist/server/web/spec-extension/unstable-no-store";
 import {auth} from "@/auth";
+import {revalidatePath} from "next/cache";
 
 /***********************************************************************
  *                       FETCH OPERATION
@@ -28,14 +29,16 @@ import {auth} from "@/auth";
  * this function is only used to make "GET" requests that prompt for JSON returns
  * that are subsequently cached by the server. This is useful as it will be used later on in
  * order to allow for custom invalidations and only used for non-authenticated paths in the API.
+ * Note that by default, the API will revalidate all requests every hour (but that can be changed if desired)
  * @param url
  * @param tagList
+ * @param revalidateTime
  */
-export async function makeCachedGetRequest(url: string, tagList?: string[]) {
+export async function makeCachedGetRequest(url: string, tagList?: string[], revalidateTime: number = 3600) {
     let response = await fetch(url, {
         method: "GET",
         headers: {"Content-Type": "application/json"},
-        ...(tagList && { next: { tags: tagList } }),
+        ...(tagList && { next: { tags: tagList, revalidate: revalidateTime } }),
     });
 
     return response;
@@ -114,7 +117,7 @@ export async function fetchNumPages(query: string, pageSize: number = NUM_BLOG_P
         return response.json() as Promise<number>;
     } catch (e) {
         console.log(`Error encountered on post fetch : ${e}`);
-        return 1;
+        return -1;
     }
 }
 
@@ -166,9 +169,7 @@ export async function fetchNextNPPostIds(query: string, currentPage: number, pag
         return response.json() as Promise<IdWrapper[]>;
     } catch (e) {
         console.log(`Error encountered on post id fetch : ${e}`);
-        return [
-            {id: "1"}
-        ];
+        return [];
     }
 }
 
