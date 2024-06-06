@@ -13,6 +13,7 @@ import {Skeleton} from "@/components/ui/skeleton";
 import {auth} from "@/auth";
 import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
 import {AlertCircle} from "lucide-react";
+import {Role} from "@/lib/definitions";
 
 interface SearchParamType {
     searchParams?: {

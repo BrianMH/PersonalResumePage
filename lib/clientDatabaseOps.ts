@@ -68,6 +68,7 @@ export type BlogStatus = {
         title?: string[];
         content?: string[];
         imageMappings?: string[];
+        published?: string[];
     },
     message?: string | null;
 }
@@ -102,6 +103,9 @@ const BlogPostSchema = z.object({
     content: z.string({
         required_error: "A blog's content cannot be empty.",
     }),
+    published: z.boolean({
+        required_error: "Published must be set to some boolean value."
+    }),
     imageMappings: z.record(
         z.string(),
         z.string().url({
@@ -127,9 +131,15 @@ const UpdateBlogPostSchema = BlogPostSchema.refine((data) => {
  * @param blogPostContent
  * @param blogHeaderRef
  * @param postTags
+ * @param publish
  * @param blogId
  */
-export async function submitBlogPost(blogPostTitle : string, blogPostContent : string, blogHeaderRef : string, postTags : TagElement[], blogId? : String) : Promise<BlogStatus> {
+export async function submitBlogPost(blogPostTitle : string,
+                                     blogPostContent : string,
+                                     blogHeaderRef : string,
+                                     postTags : TagElement[],
+                                     publish : boolean,
+                                     blogId? : String) : Promise<BlogStatus> {
     // In order for the upload to work, we need to process the images before we can send it to the backend. The REST API
     // requests the images in the object as just the filenames that would be used in the key for the bucket, and instead
     // the imageMappings map within the request body would allow the API to upload the requested images.
@@ -144,6 +154,7 @@ export async function submitBlogPost(blogPostTitle : string, blogPostContent : s
             title: blogPostTitle,
             content: updatedValues.postContent,
             postTags: postTags.map(tag => ({id: (tag.id === tag.tagName) ? null : tag.id, tagName: tag.tagName})),
+            published: publish,
             imageMappings: updatedValues.imgMaps,
         });
     } else {
@@ -154,6 +165,7 @@ export async function submitBlogPost(blogPostTitle : string, blogPostContent : s
             title: blogPostTitle,
             content: updatedValues.postContent,
             postTags: postTags.map(tag => ({id: (tag.id === tag.tagName) ? null : tag.id, tagName: tag.tagName})),
+            published: publish,
             imageMappings: updatedValues.imgMaps,
         });
     }

@@ -101,6 +101,7 @@ export type BlogPreview = {
     title: string;
     headerFilename: string;
     created: string;
+    published: boolean;
 }
 
 export type BlogPost = {
@@ -108,6 +109,7 @@ export type BlogPost = {
     title: string;
     headerFilename: string;
     content: string;
+    published: boolean;
     created: string;
     updated: string;
     postTags: TagElement[];

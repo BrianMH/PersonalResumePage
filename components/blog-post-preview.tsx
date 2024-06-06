@@ -89,7 +89,7 @@ export default async function BlogPostCard( { blogId } : { blogId : string }) {
 
             <Link
                 href={`/blog/${blogId}`}
-                className="relative bg-card flex flex-col min-w-[400px] text-center rounded-2xl"
+                className={`relative bg-card flex flex-col min-w-[400px] text-center rounded-2xl ${postContent.published ? "" : "border-2 border-baccent border-dotted"}`}
             >
                 {/*We have the image previews*/}
                 <div className="relative h-64 rounded-t-2xl overflow-hidden">

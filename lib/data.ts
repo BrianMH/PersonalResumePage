@@ -6,7 +6,7 @@ import {
     ExperienceEntry,
     GaugeValue,
     IdWrapper,
-    ProjectBrief, ProjectEntry, TagElement
+    ProjectBrief, ProjectEntry, Role, TagElement
 } from "@/lib/definitions";
 import {
     DummyEducationEntries,
@@ -33,11 +33,23 @@ import {revalidatePath} from "next/cache";
  * @param url
  * @param tagList
  * @param revalidateTime
+ * @param useAuth
  */
-export async function makeCachedGetRequest(url: string, tagList?: string[], revalidateTime: number = 3600) {
+export async function makeCachedGetRequest(url: string, tagList?: string[], useAuth: boolean = false, revalidateTime: number = 3600) {
+    // grab session if necessary
+    let accessTokHeader = null;
+    let refererHeader = null;
+    if (useAuth) {
+        const session = await auth();
+        accessTokHeader = session ? {"Authorization": `Bearer ${session?.user?.access_token}`} : null;
+        refererHeader = session ? {"Referer": `${session.user.referer}`} : null;
+    }
+
     let response = await fetch(url, {
         method: "GET",
-        headers: {"Content-Type": "application/json"},
+        headers: {"Content-Type": "application/json",
+            ...accessTokHeader, // Add our bearer token if it exists in the session
+            ...refererHeader}, // and our referer as needed,
         ...(tagList && { next: { tags: tagList, revalidate: revalidateTime } }),
     });
 
@@ -127,8 +139,19 @@ export async function fetchNumPages(query: string, pageSize: number = NUM_BLOG_P
  */
 export async function fetchPostById(id: string) : Promise<BlogPost | null> {
     try {
-        const relEndpoint = process.env.BACKEND_API_ROOT + `/blog/posts/${id}`;
-        const response = await makeCachedGetRequest(relEndpoint, ['blogPost']);
+        // get our session to identify the user
+        const session = await auth();
+        const getDrafts = session?.user?.role === Role.ADMIN;
+
+        let relEndpoint : string;
+        let response;
+        if(getDrafts) {
+            relEndpoint = process.env.BACKEND_API_ROOT + `/blog/all/posts/${id}`
+            response = await makeCachedGetRequest(relEndpoint, ['blogPost'], true);
+        } else {
+            relEndpoint = process.env.BACKEND_API_ROOT + `/blog/posts/${id}`;
+            response = await makeCachedGetRequest(relEndpoint, ['blogPost']);
+        }
 
         if(!response.ok)
             throw response.status;
@@ -159,8 +182,19 @@ export async function fetchPostPreviewById(id: string) : Promise<BlogPreview | n
 
 export async function fetchNextNPPostIds(query: string, currentPage: number, pageSize: number = NUM_BLOG_POSTS) : Promise<IdWrapper[]> {
     try {
-        const relEndpoint = process.env.BACKEND_API_ROOT + `/blog/posts/paged/${pageSize}/${currentPage-1}?tagName=${query}`
-        const response = await makeCachedGetRequest(relEndpoint, ['blogPreview']);
+        // get our session to identify the user
+        const session = await auth();
+        const getDrafts = session?.user?.role === Role.ADMIN;
+
+        let relEndpoint : string;
+        let response;
+        if(getDrafts) {
+            relEndpoint = process.env.BACKEND_API_ROOT + `/blog/posts/all/paged/${pageSize}/${currentPage - 1}?tagName=${query}`;
+            response = await makeCachedGetRequest(relEndpoint, ['blogPreview'], true)
+        } else {
+            relEndpoint = process.env.BACKEND_API_ROOT + `/blog/posts/paged/${pageSize}/${currentPage - 1}?tagName=${query}`;
+            response = await makeCachedGetRequest(relEndpoint, ['blogPreview']);
+        }
 
         if(!response.ok)
             throw response.status;

@@ -23,6 +23,9 @@ import {useToast} from "@/components/ui/use-toast";
 import {ToastAction} from "@/components/ui/toast";
 import {useRouter} from "next/navigation";
 import LoadingButton from "@/components/extended_ui/loading-button";
+import {Checkbox} from "@/components/ui/checkbox";
+import {Label} from "@/components/ui/label";
+import {CheckedState} from "@radix-ui/react-checkbox";
 
 /**
  * The extensions used by the relevant editor. This can technically be moved to another file, but since the editor won't
@@ -45,8 +48,8 @@ const extensions = [
     Figure,
 ]
 
-export default function BlogPostEditor({ defaultImagePath, initialContent, postId, initialTags, initialTitle } :
-        { defaultImagePath : string, initialContent : string, postId? : string, initialTags? : TagElement[], initialTitle?: string}) {
+export default function BlogPostEditor({ defaultImagePath, initialContent, postId, initialTags, initialTitle, isPublished } :
+        { defaultImagePath : string, initialContent : string, postId? : string, initialTags? : TagElement[], initialTitle?: string, isPublished?: boolean}) {
     // toaster
     const { toast } = useToast();
 
@@ -68,8 +71,11 @@ export default function BlogPostEditor({ defaultImagePath, initialContent, postI
     const initialState : BlogStatus = {message: null}
     const [currentState, setFormState] = useState(initialState);
     async function newPostDispatch(postId : string | undefined, formData: FormData) {
+        // we check to see if the publish box was checked
+        const toPublish = !!formData.get("publish");
+
         // we either update or create a new post depending on the bound value passed
-        const nextState = await submitBlogPost(titleInputRef.current!.value, editorHTMLCode.current, imageInputRef.current!.src, relTags, postId);
+        const nextState = await submitBlogPost(titleInputRef.current!.value, editorHTMLCode.current, imageInputRef.current!.src, relTags, toPublish , postId);
         setFormState(nextState);
         if(!nextState.errors) {
             // allow user redirection if desired
@@ -167,6 +173,17 @@ export default function BlogPostEditor({ defaultImagePath, initialContent, postI
                         {currentState.errors?.postTags && currentState.errors.postTags.map((error: string) => (
                             <p className="text-sm text-red-500 py-1" key={error}>{error}</p>
                         ))}
+                    </div>
+
+                    <div className="flex flex-row gap-x-3">
+                        <Checkbox
+                            id="publish"
+                            name="publish"
+                            defaultChecked={isPublished}
+                        />
+                        <Label htmlFor="publish">
+                            Set post as published.
+                        </Label>
                     </div>
                 </EditorProvider>
             </article>
