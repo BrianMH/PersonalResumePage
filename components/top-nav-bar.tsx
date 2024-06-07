@@ -16,6 +16,7 @@ import {
 import {ProjectBrief, Role} from "@/lib/definitions";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {performLogOut} from "@/lib/helper";
+import {revalidateAllBlogPosts, revalidateAllBlogPreviews, revalidateAllBlogTags} from "@/lib/revalidateOps";
 
 export default function NavigationMenuDemo({ loginLink, userImage, username, userRole, userLogged, projBriefs }
                                                : { loginLink: string, userImage?: string, username: string, userRole: Role, userLogged: boolean, projBriefs : ProjectBrief[] } ) {
@@ -93,8 +94,32 @@ export default function NavigationMenuDemo({ loginLink, userImage, username, use
                                     </ListItem>
                                 )}
                                 <form action={performLogOut}>
-                                    <button className="w-full text-sm flex flex-row select-none space-y-1 rounded-md p-3 py-5 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">Sign Out</button>
+                                    <button
+                                        className="w-full text-sm flex flex-row select-none space-y-1 rounded-md p-3 py-5 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
+                                        Sign Out
+                                    </button>
                                 </form>
+
+                                {/*TODO: These need to be placed into the dashboard debug section instead*/}
+                                <form action={revalidateAllBlogPosts}>
+                                    <button
+                                        className="w-full text-sm flex flex-row select-none space-y-1 rounded-md p-3 py-5 leading-none no-underline outline-none transition-colors text-destructive hover:bg-accent focus:bg-accent">
+                                        Erase Post Cache
+                                    </button>
+                                </form>
+                                <form action={revalidateAllBlogPreviews}>
+                                    <button
+                                        className="w-full text-sm flex flex-row select-none space-y-1 rounded-md p-3 py-5 leading-none no-underline outline-none transition-colors text-destructive hover:bg-accent focus:bg-accent">
+                                        Erase Preview Cache
+                                    </button>
+                                </form>
+                                <form action={revalidateAllBlogTags}>
+                                    <button
+                                        className="w-full text-sm flex flex-row select-none space-y-1 rounded-md p-3 py-5 leading-none no-underline outline-none transition-colors text-destructive hover:bg-accent focus:bg-accent">
+                                        Erase Tag Cache
+                                    </button>
+                                </form>
+
                             </ul>
                         </NavigationMenuContent>
                     </NavigationMenuItem>
