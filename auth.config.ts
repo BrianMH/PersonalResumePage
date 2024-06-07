@@ -8,6 +8,7 @@ import type {Account, NextAuthConfig} from 'next-auth';
 import {JWT} from "@auth/core/jwt";
 import {syncAccessToken, updateAccessToken} from "@/lib/databaseOps";
 import {Role} from "@/lib/definitions";
+import {Errors} from "@/lib/errors";
 
 export const authConfig = {
     pages: {
@@ -36,8 +37,12 @@ export const authConfig = {
             return true;
         },
         // Controls whether a login is allowed to occur
+        // For now, I will restrict access to just the provided e-mail
         async signIn({ user, account, profile }) {
-            return true;
+            if(profile?.email === process.env.ADMIN_EMAIL)
+                return true;
+            else
+                return `/?error=${Errors.LOGIN_DISABLED_ERROR}`;
         },
         // processes the JWT (this would persist something to the database)
         async jwt({token, user, account}) {
