@@ -79,14 +79,10 @@ export default async function BlogPage({ searchParams } : SearchParamType ) {
                     {currentPostIds.map(idWrapper => {
 
                         return (
-                            <Suspense
+                            <BlogPostCard
                                 key={idWrapper.id}
-                                fallback={<Skeleton className="h-96 w-full rounded-2xl" />}
-                            >
-                                <BlogPostCard
-                                    blogId={idWrapper.id}
-                                />
-                            </Suspense>
+                                blogId={idWrapper.id}
+                            />
                         )
                     })}
                 </div>
