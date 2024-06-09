@@ -17,9 +17,7 @@ import {
 } from "@/lib/dummyData";
 import {NUM_BLOG_POSTS} from "@/lib/consts";
 import {makeLocalRequestWithData} from "@/lib/clientDatabaseOps";
-import {unstable_noStore as noStore} from "next/dist/server/web/spec-extension/unstable-no-store";
 import {auth} from "@/auth";
-import {revalidatePath} from "next/cache";
 
 /***********************************************************************
  *                       FETCH OPERATION
@@ -64,19 +62,35 @@ export async function makeCachedGetRequest(url: string, tagList?: string[], useA
  * This is where all the database retrievals will happen.
  */
 export async function fetchTechnicalSkills() : Promise<GaugeValue[]> {
-    // first load our data via a fetch operation
-    const skillData = Promise.resolve(DummyTechnicalGuageData);
+    try {
+        const relEndpoint = process.env.BACKEND_API_ROOT + '/resume/skills/type/technical';
+        const response = await makeCachedGetRequest(relEndpoint, ['resume', 'skill']);
 
-    // and then return it
-    return skillData;
+        if(!response.ok)
+            throw response.status;
+
+        // then process json
+        return response.json() as Promise<GaugeValue[]>;
+    } catch (e) {
+        console.log("Error encountered fetching technical skills. Falling back on dummy data.");
+        return DummyTechnicalGuageData;
+    }
 }
 
 export async function fetchSoftSkills() : Promise<GaugeValue[]> {
-    // first load in our data
-    const skillData = Promise.resolve(DummySoftSkillData);
+    try {
+        const relEndpoint = process.env.BACKEND_API_ROOT + '/resume/skills/type/soft';
+        const response = await makeCachedGetRequest(relEndpoint, ['resume', 'skill']);
 
-    // and then return it
-    return skillData;
+        if(!response.ok)
+            throw response.status;
+
+        // then process json
+        return response.json() as Promise<GaugeValue[]>;
+    } catch (e) {
+        console.log("Error encountered fetching soft skills. Falling back on dummy data.");
+        return DummySoftSkillData;
+    }
 }
 
 export async function fetchProjectBriefs() : Promise<ProjectBrief[]> {
@@ -102,19 +116,35 @@ export async function fetchProjects() : Promise<ProjectEntry[]> {
 }
 
 export async function fetchEducationEntries() : Promise<EducationEntry[]> {
-    // first load in data
-    const eduData = Promise.resolve(DummyEducationEntries);
+    try {
+        const relEndpoint = process.env.BACKEND_API_ROOT + '/resume/education';
+        const response = await makeCachedGetRequest(relEndpoint, ['resume', 'education']);
 
-    // and return it
-    return eduData;
+        if(!response.ok)
+            throw response.status;
+
+        // then process json
+        return response.json() as Promise<EducationEntry[]>;
+    } catch (e) {
+        console.log("Error encountered fetching soft skills. Falling back on dummy data.");
+        return DummyEducationEntries;
+    }
 }
 
 export async function fetchExperienceEntries() : Promise<ExperienceEntry[]> {
-    // first load in data
-    const expData = Promise.resolve(DummyExperienceEntries);
+    try {
+        const relEndpoint = process.env.BACKEND_API_ROOT + '/resume/experience';
+        const response = await makeCachedGetRequest(relEndpoint, ['resume', 'experience']);
 
-    // and return it
-    return expData;
+        if(!response.ok)
+            throw response.status;
+
+        // then process json
+        return response.json() as Promise<ExperienceEntry[]>;
+    } catch (e) {
+        console.log("Error encountered fetching soft skills. Falling back on dummy data.");
+        return DummyExperienceEntries;
+    }
 }
 
 export async function fetchNumPages(query: string, pageSize: number = NUM_BLOG_POSTS) : Promise<number> {

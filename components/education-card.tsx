@@ -3,10 +3,17 @@
  */
 import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "@/components/ui/accordion";
 import {fetchEducationEntries} from "@/lib/data";
+import {convertNumericalDateToMM_YY} from "@/lib/helper";
 
 export default async function EducationCard() {
     // first get our educational data from server
     const educationEntries = await fetchEducationEntries();
+
+    // adjust our dates beforehand
+    for(let relEntry of educationEntries) {
+        relEntry.degreeStart = await convertNumericalDateToMM_YY(relEntry.degreeStart);
+        relEntry.degreeEnd = await convertNumericalDateToMM_YY(relEntry.degreeEnd);
+    }
 
     return (
         <div className="flex-1 flex flex-col bg-card p-6">

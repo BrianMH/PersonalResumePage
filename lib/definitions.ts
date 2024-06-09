@@ -65,14 +65,9 @@ export type EducationEntry = {
 /**
  * Used to keep track of experiences (AKA paid work / internships / etc.)
  */
-export type BulletEntry = {
-    id: string;
-    text: string;
-}
-
 export type ReferenceEntry = {
     id: string;
-    type: string;
+    icon: string;
     description: string;
     href: string;
 }
@@ -85,7 +80,7 @@ export type ExperienceEntry = {
     jobTimeEnd: string;
     jobType: string;
     description: {
-        bullets: BulletEntry[];
+        bullets: String[];
         references?: ReferenceEntry[];
     };
 }

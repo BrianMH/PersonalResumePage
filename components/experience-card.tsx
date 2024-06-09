@@ -6,10 +6,17 @@ import {BookOpenCheckIcon, GithubIcon, GlobeIcon, LinkedinIcon} from "lucide-rea
 import Link from "next/link";
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip";
 import {fetchExperienceEntries} from "@/lib/data";
+import {convertNumericalDateToMM_YY} from "@/lib/helper";
 
 
 export default async function ExperienceCard() {
     const experienceEntries = await fetchExperienceEntries();
+
+    // convert our date values
+    for(let relEntry of experienceEntries) {
+        relEntry.jobTimeStart = await convertNumericalDateToMM_YY(relEntry.jobTimeStart);
+        relEntry.jobTimeEnd = await convertNumericalDateToMM_YY(relEntry.jobTimeEnd);
+    }
 
     return (
         <div className="flex-1 flex flex-col bg-card p-6">
@@ -45,15 +52,15 @@ export default async function ExperienceCard() {
                             <AccordionContent>
                                 <div className="flex flex-col w-full">
                                     <ul className="list-disc list-inside">
-                                        {entry.description.bullets.map(bulletObject => {
+                                        {entry.description.bullets.map((bulletObject, index) => {
                                             return (
-                                                <li key={bulletObject.id}>{bulletObject.text}</li>
+                                                <li key={index}>{bulletObject}</li>
                                             );
                                         })}
                                     </ul>
 
                                     {/*And then references if they exist for the position (NDA allowing)*/}
-                                    { entry.description.references &&
+                                    { entry.description.references && entry.description.references.length > 0 &&
                                         (
                                             <div className="flex flex-row gap-3 pt-3">
                                                 <div className="flex flex-col justify-center align-middle">
@@ -63,14 +70,14 @@ export default async function ExperienceCard() {
                                                 {entry.description.references && entry.description.references.map(curReference => {
                                                     // disambiguate between relevant icons for references
                                                     let RelIcon;
-                                                    switch (curReference.type) {
-                                                        case 'Github':
+                                                    switch (curReference.icon) {
+                                                        case 'GITHUB_ICON':
                                                             RelIcon = GithubIcon;
                                                             break;
-                                                        case 'LinkedIn':
+                                                        case 'LINKEDIN_ICON':
                                                             RelIcon = LinkedinIcon;
                                                             break;
-                                                        case 'Project':
+                                                        case 'BOOK_ICON':
                                                             RelIcon = BookOpenCheckIcon;
                                                             break;
                                                         default:

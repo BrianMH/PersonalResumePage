@@ -85,9 +85,9 @@ export const DummyExperienceEntries: ExperienceEntry[] = [
         jobType: "Research",
         description: {
             bullets: [
-                {id: "1", text: "Designed control scheme and software GUI interface for snake-like colonoscopy robot prototype using Python and MATLAB"},
-                {id: "2", text: "Tripled robot sensor polling rate by improving on the ARM C-based implementation"},
-                {id: "3", text: "Assisted in data collection of robot performance, wrote journal paper drafts, and presented on an MVP publicly"},
+                "Designed control scheme and software GUI interface for snake-like colonoscopy robot prototype using Python and MATLAB",
+                "Tripled robot sensor polling rate by improving on the ARM C-based implementation",
+                "Assisted in data collection of robot performance, wrote journal paper drafts, and presented on an MVP publicly",
             ],
         },
     },
@@ -100,17 +100,17 @@ export const DummyExperienceEntries: ExperienceEntry[] = [
         jobType: "Contract",
         description: {
             bullets: [
-                {id: "1", text: "Increased student course enrollment by re-structuring the face recognition project to expand on" +
-                        "theoretical underpinnings and modifying it to use up-to-date APIs"},
-                {id: "2", text: "Mentored several student software development teams simultaneously and functioned as a domain expert and " +
-                        "scrum leader, ensuring deadlines were met and goals were feasible"},
-                {id: "3", text: "Created student resources & documentation for multiple in-development projects to slowly introduce to the course"},
-                {id: "4", text: "Researched and implemented minimum viable products for prospective course project ideas in a team of four"},
+                "Increased student course enrollment by re-structuring the face recognition project to expand on" +
+                    "theoretical underpinnings and modifying it to use up-to-date APIs",
+                "Mentored several student software development teams simultaneously and functioned as a domain expert and " +
+                        "scrum leader, ensuring deadlines were met and goals were feasible",
+                "Created student resources & documentation for multiple in-development projects to slowly introduce to the course",
+                "Researched and implemented minimum viable products for prospective course project ideas in a team of four",
             ],
             references: [
-                {id: "1", type: "Website", description: "Course Site", href: "https://pib.ucsd.edu/"},
-                {id: "2", type: "Project", description: "Project Page", href: "https://sites.google.com/view/ece-196/face-recognition"},
-                {id: "3", type: "Github", description: "Course Github", href: "https://github.com/ProjectInABox"},
+                {id: "1", icon: "WEB_ICON", description: "Course Site", href: "https://pib.ucsd.edu/"},
+                {id: "2", icon: "BOOK_ICON", description: "Project Page", href: "https://sites.google.com/view/ece-196/face-recognition"},
+                {id: "3", icon: "GITHUB_ICON", description: "Course Github", href: "https://github.com/ProjectInABox"},
             ]
         }
     },
@@ -123,20 +123,15 @@ export const DummyExperienceEntries: ExperienceEntry[] = [
         jobType: "Contract",
         description: {
             bullets: [
-                {id: "1", text: "Engaged in one-on-ones with students during lab sections and office hours sections to futther knowledge of common" +
-                        "circuit systems and their issues"},
-                {id: "2", text: "Increased student course satisfaction by holding discussion sections that involved difficult-to-solve circuit systems" +
-                        "and a more interactive environment"},
+                "Engaged in one-on-ones with students during lab sections and office hours sections to further knowledge of common" +
+                        "circuit systems and their issues",
+                "Increased student course satisfaction by holding discussion sections that involved difficult-to-solve circuit systems" +
+                        "and a more interactive environment",
             ]
         }
     }
 ]
 
-export const DummyTagData : TagElement[] = [
-    {id: "1", tagName: "Front-end"},
-    {id: "2", tagName: "Back-end"},
-    {id: "3", tagName: "Updates"},
-]
 
 export const DummyProjectData : ProjectEntry[] = [
     {
