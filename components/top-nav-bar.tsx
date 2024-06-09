@@ -16,7 +16,12 @@ import {
 import {ProjectBrief, Role} from "@/lib/definitions";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {performLogOut} from "@/lib/helper";
-import {revalidateAllBlogPosts, revalidateAllBlogPreviews, revalidateAllBlogTags} from "@/lib/revalidateOps";
+import {
+    revalidateAllBlogPosts,
+    revalidateAllBlogPreviews,
+    revalidateAllBlogTags,
+    revalidateAllResumeElements
+} from "@/lib/revalidateOps";
 
 export default function NavigationMenuDemo({ loginLink, userImage, username, userRole, userLogged, projBriefs }
                                                : { loginLink: string, userImage?: string, username: string, userRole: Role, userLogged: boolean, projBriefs : ProjectBrief[] } ) {
@@ -119,7 +124,12 @@ export default function NavigationMenuDemo({ loginLink, userImage, username, use
                                         Erase Tag Cache
                                     </button>
                                 </form>
-
+                                <form action={revalidateAllResumeElements}>
+                                    <button
+                                        className="w-full text-sm flex flex-row select-none space-y-1 rounded-md p-3 py-5 leading-none no-underline outline-none transition-colors text-destructive hover:bg-accent focus:bg-accent">
+                                        Erase Resume Cache
+                                    </button>
+                                </form>
                             </ul>
                         </NavigationMenuContent>
                     </NavigationMenuItem>
@@ -138,7 +148,7 @@ const ListItem = React.forwardRef<
     return (
         <li>
             <NavigationMenuLink asChild>
-                <a
+            <a
                     ref={ref}
                     className={cn(
                         "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",

@@ -25,3 +25,10 @@ export async function revalidateAllBlogPreviews() {
 export async function revalidateAllBlogTags() {
     revalidateTag("blogTag");
 }
+
+/**
+ * Forces revalidation of the resume page
+ */
+export async function revalidateAllResumeElements() {
+    revalidateTag("resume");
+}
