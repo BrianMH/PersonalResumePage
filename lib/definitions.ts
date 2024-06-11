@@ -13,18 +13,6 @@ export type GaugeValue = {
 };
 
 /**
- * Encapsulation of a project as described by the database
- */
-export type Project = {
-    id: string;
-    title: string;
-    description: string;
-    imageRef: string|null;
-
-    relevantContent: string; // TODO: This would be encoded HTML. Is there a better way of managing project content?
-}
-
-/**
  * A shortened version of project that doesn't provide as much information since it may not be used again
  *
  * Maybe includes an image ref that can be used? Not sure if it would be necessary at this point.
@@ -43,6 +31,20 @@ export type ProjectEntry = {
     description: string;
     imageRef: string;
     content: {};
+}
+
+export type Project = {
+    id: string;
+    title: string;
+    short_description: string;
+    project_role: string;
+    project_type: string;
+    project_start: string;
+    project_end: string;
+    content: {
+        bullets: string[];
+        references: ReferenceEntry[];
+    };
 }
 
 /**
@@ -118,16 +120,6 @@ export type IdWrapper = {
 export const enum Role {
     USER = "ROLE_USER",
     ADMIN = "ROLE_ADMIN",
-}
-
-// Represents a data type that will be used to communicate with the backend for token management
-export type User = {
-    id: string;
-    email: string;
-    username: string;
-    access_token: string;
-    expires: number;
-    roles: String[];
 }
 
 export type ServerStatusResponse = {

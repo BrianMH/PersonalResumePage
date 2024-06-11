@@ -6,7 +6,7 @@ import {
     BlogPost,
     EducationEntry,
     ExperienceEntry,
-    GaugeValue,
+    GaugeValue, Project,
     ProjectEntry,
     TagElement
 } from "@/lib/definitions";
@@ -132,7 +132,6 @@ export const DummyExperienceEntries: ExperienceEntry[] = [
     }
 ]
 
-
 export const DummyProjectData : ProjectEntry[] = [
     {
         id: "1",
@@ -159,6 +158,99 @@ export const DummyProjectData : ProjectEntry[] = [
         imageRef: "",
         content: {
 
+        }
+    }
+]
+
+/**
+ * Project Data present in the Resume page is largely an overview of what was done in the project. There can be better
+ * representations for it, but sticking with the typical general resume bullet format and then maybe adding a line
+ * regarding the objective of the project may be more useful. Much like with the experience section, this can include
+ * references.
+ */
+export const DummyResumeProjectData : Project[] = [
+    {
+        id: '1',
+        title: "Example Project #1",
+        short_description: "An implementation of X using A, B, and C technologies.",
+        project_role: "Software Developer",
+        project_type: "Coursework",
+        project_start: "01-01-2001",
+        project_end: "02-02-2002",
+        content: {
+            bullets: [
+                "Bullet #1 Bullet #1 Bullet #1 Bullet #1 Bullet #1 Bullet #1 Bullet #1 Bullet #1 Bullet #1 Bullet #1 Bullet #1 Bullet #1 Bullet #1 Bullet #1 Bullet #1 Bullet #1 Bullet #1 Bullet #1 Bullet #1 Bullet #1 Bullet #1 Bullet #1 Bullet #1 Bullet #1 Bullet #1 Bullet #1 Bullet #1 Bullet #1 ",
+                "Bullet #2",
+                "Bullet #3",
+                "Bullet #4",
+            ],
+            references: [
+                {id: "1", icon: "WEB_ICON", description: "Example #1", href: "/"},
+                {id: "2", icon: "LINKEDIN_ICON", description: "Example #2", href: "/"},
+            ],
+        }
+    },
+    {
+        id: '2',
+        title: "Example Project #2",
+        short_description: "An implementation of X using A, B, and C technologies.",
+        project_role: "PCB Designer",
+        project_type: "Personal Project",
+        project_start: "01-01-2001",
+        project_end: "02-02-2002",
+        content: {
+            bullets: [
+                "Bullet #1",
+                "Bullet #2",
+                "Bullet #3",
+                "Bullet #4",
+            ],
+            references: [
+                {id: "1", icon: "WEB_ICON", description: "Example #1", href: "/"},
+                {id: "2", icon: "LINKEDIN_ICON", description: "Example #2", href: "/"},
+            ],
+        }
+    },
+    {
+        id: '3',
+        title: "Example Project #3",
+        short_description: "An implementation of X using A, B, and C technologies.",
+        project_role: "PCB Designer",
+        project_type: "Personal Project",
+        project_start: "01-01-2001",
+        project_end: "02-02-2002",
+        content: {
+            bullets: [
+                "Bullet #1",
+                "Bullet #2",
+                "Bullet #3",
+                "Bullet #4 Bullet #4 Bullet #4 Bullet #4 Bullet #4 Bullet #4 Bullet #4 Bullet #4 Bullet #4 ",
+            ],
+            references: [
+                {id: "1", icon: "WEB_ICON", description: "Example #1", href: "/"},
+                {id: "2", icon: "LINKEDIN_ICON", description: "Example #2", href: "/"},
+            ],
+        }
+    },
+    {
+        id: '4',
+        title: "Example Project #4",
+        short_description: "An implementation of X using A, B, and C technologies.",
+        project_role: "PCB Designer",
+        project_type: "Personal Project",
+        project_start: "01-01-2001",
+        project_end: "02-02-2002",
+        content: {
+            bullets: [
+                "Bullet #1",
+                "Bullet #2Bullet #2Bullet #2Bullet #2Bullet #2Bullet #2Bullet #2Bullet #2Bullet #2Bullet #2Bullet #2Bullet #2Bullet #2Bullet #2",
+                "Bullet #3",
+                "Bullet #4 Bullet #4 Bullet #4 Bullet #4 Bullet #4 Bullet #4 Bullet #4 Bullet #4 Bullet #4 ",
+            ],
+            references: [
+                {id: "1", icon: "WEB_ICON", description: "Example #1", href: "/"},
+                {id: "2", icon: "LINKEDIN_ICON", description: "Example #2", href: "/"},
+            ],
         }
     }
 ]

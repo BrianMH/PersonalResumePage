@@ -5,13 +5,13 @@ import {
     EducationEntry,
     ExperienceEntry,
     GaugeValue,
-    IdWrapper,
+    IdWrapper, Project,
     ProjectBrief, ProjectEntry, Role, TagElement
 } from "@/lib/definitions";
 import {
     DummyEducationEntries,
     DummyExperienceEntries,
-    DummyProjectData,
+    DummyProjectData, DummyResumeProjectData,
     DummySoftSkillData,
     DummyTechnicalGuageData
 } from "@/lib/dummyData";
@@ -105,6 +105,18 @@ export async function fetchProjectBriefs() : Promise<ProjectBrief[]> {
 
     // and return it
     return briefData;
+}
+
+export async function fetchSingleProjectById(projId : string) : Promise<Project|undefined> {
+    const projData = Promise.resolve(DummyResumeProjectData.find((value, index, obj) => value.id === projId ));
+
+    return projData;
+}
+
+export async function fetchResumeProjectIds() : Promise<string[]> {
+    const projIds = Promise.resolve(DummyResumeProjectData.map(inElem => inElem.id));
+
+    return projIds;
 }
 
 export async function fetchProjects() : Promise<ProjectEntry[]> {
