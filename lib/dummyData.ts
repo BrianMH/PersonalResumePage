@@ -172,11 +172,11 @@ export const DummyResumeProjectData : Project[] = [
     {
         id: '1',
         title: "Example Project #1",
-        short_description: "An implementation of X using A, B, and C technologies.",
-        project_role: "Software Developer",
-        project_type: "Coursework",
-        project_start: "01-01-2001",
-        project_end: "02-02-2002",
+        shortDescription: "An implementation of X using A, B, and C technologies.",
+        projectRole: "Software Developer",
+        projectType: "Coursework",
+        projectStart: "01-01-2001",
+        projectEnd: "02-02-2002",
         content: {
             bullets: [
                 "Bullet #1 Bullet #1 Bullet #1 Bullet #1 Bullet #1 Bullet #1 Bullet #1 Bullet #1 Bullet #1 Bullet #1 Bullet #1 Bullet #1 Bullet #1 Bullet #1 Bullet #1 Bullet #1 Bullet #1 Bullet #1 Bullet #1 Bullet #1 Bullet #1 Bullet #1 Bullet #1 Bullet #1 Bullet #1 Bullet #1 Bullet #1 Bullet #1 ",
@@ -193,11 +193,11 @@ export const DummyResumeProjectData : Project[] = [
     {
         id: '2',
         title: "Example Project #2",
-        short_description: "An implementation of X using A, B, and C technologies.",
-        project_role: "PCB Designer",
-        project_type: "Personal Project",
-        project_start: "01-01-2001",
-        project_end: "02-02-2002",
+        shortDescription: "An implementation of X using A, B, and C technologies.",
+        projectRole: "PCB Designer",
+        projectType: "Personal Project",
+        projectStart: "01-01-2001",
+        projectEnd: "02-02-2002",
         content: {
             bullets: [
                 "Bullet #1",
@@ -214,11 +214,11 @@ export const DummyResumeProjectData : Project[] = [
     {
         id: '3',
         title: "Example Project #3",
-        short_description: "An implementation of X using A, B, and C technologies.",
-        project_role: "PCB Designer",
-        project_type: "Personal Project",
-        project_start: "01-01-2001",
-        project_end: "02-02-2002",
+        shortDescription: "An implementation of X using A, B, and C technologies.",
+        projectRole: "PCB Designer",
+        projectType: "Personal Project",
+        projectStart: "01-01-2001",
+        projectEnd: "02-02-2002",
         content: {
             bullets: [
                 "Bullet #1",
@@ -235,11 +235,95 @@ export const DummyResumeProjectData : Project[] = [
     {
         id: '4',
         title: "Example Project #4",
-        short_description: "An implementation of X using A, B, and C technologies.",
-        project_role: "PCB Designer",
-        project_type: "Personal Project",
-        project_start: "01-01-2001",
-        project_end: "02-02-2002",
+        shortDescription: "An implementation of X using A, B, and C technologies.",
+        projectRole: "PCB Designer",
+        projectType: "Personal Project",
+        projectStart: "01-01-2001",
+        projectEnd: "02-02-2002",
+        content: {
+            bullets: [
+                "Bullet #1",
+                "Bullet #2Bullet #2Bullet #2Bullet #2Bullet #2Bullet #2Bullet #2Bullet #2Bullet #2Bullet #2Bullet #2Bullet #2Bullet #2Bullet #2",
+                "Bullet #3",
+                "Bullet #4 Bullet #4 Bullet #4 Bullet #4 Bullet #4 Bullet #4 Bullet #4 Bullet #4 Bullet #4 ",
+            ],
+            references: [
+                {id: "1", icon: "WEB_ICON", description: "Example #1", href: "/"},
+                {id: "2", icon: "LINKEDIN_ICON", description: "Example #2", href: "/"},
+            ],
+        }
+    },
+    {
+        id: '5',
+        title: "Example Project #5",
+        shortDescription: "An implementation of X using A, B, and C technologies.",
+        projectRole: "PCB Designer",
+        projectType: "Personal Project",
+        projectStart: "01-01-2001",
+        projectEnd: "02-02-2002",
+        content: {
+            bullets: [
+                "Bullet #1",
+                "Bullet #2Bullet #2Bullet #2Bullet #2Bullet #2Bullet #2Bullet #2Bullet #2Bullet #2Bullet #2Bullet #2Bullet #2Bullet #2Bullet #2",
+                "Bullet #3",
+                "Bullet #4 Bullet #4 Bullet #4 Bullet #4 Bullet #4 Bullet #4 Bullet #4 Bullet #4 Bullet #4 ",
+            ],
+            references: [
+                {id: "1", icon: "WEB_ICON", description: "Example #1", href: "/"},
+                {id: "2", icon: "LINKEDIN_ICON", description: "Example #2", href: "/"},
+            ],
+        }
+    },
+    {
+        id: '6',
+        title: "Example Project #6",
+        shortDescription: "An implementation of X using A, B, and C technologies.",
+        projectRole: "PCB Designer",
+        projectType: "Personal Project",
+        projectStart: "01-01-2001",
+        projectEnd: "02-02-2002",
+        content: {
+            bullets: [
+                "Bullet #1",
+                "Bullet #2Bullet #2Bullet #2Bullet #2Bullet #2Bullet #2Bullet #2Bullet #2Bullet #2Bullet #2Bullet #2Bullet #2Bullet #2Bullet #2",
+                "Bullet #3",
+                "Bullet #4 Bullet #4 Bullet #4 Bullet #4 Bullet #4 Bullet #4 Bullet #4 Bullet #4 Bullet #4 ",
+            ],
+            references: [
+                {id: "1", icon: "WEB_ICON", description: "Example #1", href: "/"},
+                {id: "2", icon: "LINKEDIN_ICON", description: "Example #2", href: "/"},
+            ],
+        }
+    },
+    {
+        id: '7',
+        title: "Example Project #7",
+        shortDescription: "An implementation of X using A, B, and C technologies.",
+        projectRole: "PCB Designer",
+        projectType: "Personal Project",
+        projectStart: "01-01-2001",
+        projectEnd: "02-02-2002",
+        content: {
+            bullets: [
+                "Bullet #1",
+                "Bullet #2Bullet #2Bullet #2Bullet #2Bullet #2Bullet #2Bullet #2Bullet #2Bullet #2Bullet #2Bullet #2Bullet #2Bullet #2Bullet #2",
+                "Bullet #3",
+                "Bullet #4 Bullet #4 Bullet #4 Bullet #4 Bullet #4 Bullet #4 Bullet #4 Bullet #4 Bullet #4 ",
+            ],
+            references: [
+                {id: "1", icon: "WEB_ICON", description: "Example #1", href: "/"},
+                {id: "2", icon: "LINKEDIN_ICON", description: "Example #2", href: "/"},
+            ],
+        }
+    },
+    {
+        id: '8',
+        title: "Example Project #8",
+        shortDescription: "An implementation of X using A, B, and C technologies.",
+        projectRole: "PCB Designer",
+        projectType: "Personal Project",
+        projectStart: "01-01-2001",
+        projectEnd: "02-02-2002",
         content: {
             bullets: [
                 "Bullet #1",

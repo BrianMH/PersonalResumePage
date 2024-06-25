@@ -26,7 +26,8 @@ export default async function TopNav( { children } : Readonly<{ children : React
                 {children}
             </div>
 
-            <BottomBarReference />
+            {/*For now the bott reference can be commented out. Unsure if I actually need this for all pages.*/}
+            {/*<BottomBarReference />*/}
         </div>
     )
 }

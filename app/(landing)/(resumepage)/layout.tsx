@@ -7,11 +7,11 @@ import SideNavBar from "@/components/side-resume-navigation";
 export default async function SideNavigationLayout( { children } : Readonly<{ children : React.ReactNode }>) {
     return (
         <div className="flex-1 flex flex-col lg:flex-row">
-            <div className="flex flex-row lg:flex-col justify-center align-middle">
+            <div className="flex flex-row lg:flex-col justify-center align-middle lg:max-h-[80vh]">
                 <SideNavBar />
             </div>
 
-            <div className="relative flex-1 flex flex-col mx-6 p-6 max-h-[85vh]">
+            <div className="relative flex-1 flex flex-col mx-6 p-6">
                 {children}
             </div>
         </div>

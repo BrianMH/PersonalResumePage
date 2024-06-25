@@ -108,23 +108,35 @@ export async function fetchProjectBriefs() : Promise<ProjectBrief[]> {
 }
 
 export async function fetchSingleProjectById(projId : string) : Promise<Project|undefined> {
-    const projData = Promise.resolve(DummyResumeProjectData.find((value, index, obj) => value.id === projId ));
+    try {
+        const relEndpoint = process.env.BACKEND_API_ROOT + `/resume/project/${projId}`;
+        const response = await makeCachedGetRequest(relEndpoint, ['resume', 'project']);
 
-    return projData;
+        if(!response.ok)
+            throw response.status;
+
+        // then return json
+        return response.json() as Promise<Project>;
+    } catch (e) {
+        console.log(`Error fetching project content with id ${projId}: ${e}`);
+        return;
+    }
 }
 
 export async function fetchResumeProjectIds() : Promise<string[]> {
-    const projIds = Promise.resolve(DummyResumeProjectData.map(inElem => inElem.id));
+    try {
+        const relEndpoint = process.env.BACKEND_API_ROOT + '/resume/project/index';
+        const response = await makeCachedGetRequest(relEndpoint, ['resume', 'project']);
 
-    return projIds;
-}
+        if(!response.ok)
+            throw response.status;
 
-export async function fetchProjects() : Promise<ProjectEntry[]> {
-    // first load in data
-    const projData = Promise.resolve(DummyProjectData);
-
-    // and return it
-    return projData;
+        // then process json
+        return response.json() as Promise<string[]>
+    } catch (e) {
+        console.log("Error encountered fetching project ids. Returning empty array...");
+        return [];
+    }
 }
 
 export async function fetchEducationEntries() : Promise<EducationEntry[]> {

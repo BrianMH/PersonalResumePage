@@ -12,13 +12,17 @@ const monthNames = ["January", "February", "March", "April", "May", "June", "Jul
  * @param inputDate
  */
 export async function convertNumericalDateToMM_YY(inputDate : string) {
+    // if entry is null, then it must be due to being the current date
+    if(inputDate === null)
+        return "Current";
+
     // first split our strings into the required three parts
     const resToks = inputDate.split("-")
     if(resToks.length !== 3)
         return inputDate; // prevent manipulation if the passed value makes no sense
 
     // then use the relevant parts to create the final response
-    return monthNames[Number(resToks[1]) - 1].substring(0, 3) + " '" + resToks[2].substring(2);
+    return monthNames[Number(resToks[1]) - 1].substring(0, 3) + " '" + resToks[0].substring(2);
 }
 
 /**

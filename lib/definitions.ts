@@ -36,11 +36,11 @@ export type ProjectEntry = {
 export type Project = {
     id: string;
     title: string;
-    short_description: string;
-    project_role: string;
-    project_type: string;
-    project_start: string;
-    project_end: string;
+    shortDescription: string;
+    projectRole: string;
+    projectType: string;
+    projectStart: string;
+    projectEnd: string;
     content: {
         bullets: string[];
         references: ReferenceEntry[];
@@ -68,7 +68,7 @@ export type EducationEntry = {
  * Used to keep track of experiences (AKA paid work / internships / etc.)
  */
 export type ReferenceEntry = {
-    id: string;
+    id: string|null;
     icon: string;
     description: string;
     href: string;

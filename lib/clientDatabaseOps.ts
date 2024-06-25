@@ -2,7 +2,7 @@
 
 import {unstable_noStore as noStore} from "next/dist/server/web/spec-extension/unstable-no-store";
 import {auth} from "@/auth";
-import {BlogPost, ServerStatusResponse, TagElement} from "@/lib/definitions";
+import {BlogPost, Project, ServerStatusResponse, TagElement} from "@/lib/definitions";
 import {z} from "zod";
 import {generateAPIContentWithMappings} from "@/lib/helper";
 import {revalidatePath, revalidateTag} from "next/cache";
@@ -240,6 +240,139 @@ export async function deletePostById(postId: string): Promise<ServerStatusRespon
             success: false,
             statusCode: 400,
             message: "Unknown error encountered."
+        };
+    }
+}
+
+/***********************************************************************
+ *                  RESUME PROJECT OPERATIONS                          *
+ ***********************************************************************/
+
+export type ResumeProjectStatus = {
+    errors?: {
+        id?: string[];
+        title?: string[];
+        shortDescription?: string[];
+        projectRole?: string[];
+        projectType?: string[];
+        projectStart?: string[];
+        projectEnd?: string[];
+        content?: string[];
+    },
+    message?: string | null;
+}
+
+const ReferenceSchema = z.object({
+    id: z.string().nullable(),
+    href: z.string({
+        required_error: "Reference must contain a valid hyperlink reference."
+    }),
+    icon: z.string({
+        required_error: "Reference must have a valid icon type string value."
+    }),
+    description: z.string().nullable(),
+})
+
+const ResumeProjectSchema = z.object({
+    id: z.string().nullable(),
+    title: z.string({
+        required_error: "Resume project must have a valid title.",
+    }).max(50, {
+        message: "Title cannot be more than 50 characters long.",
+    }).min(1, {
+        message: "Title cannot be empty."
+    }),
+    shortDescription: z.string({
+        required_error: "Resume project must have some short description.",
+    }),
+    projectRole: z.string({
+        required_error: "Resume project must have some defined role.",
+    }).min(1, {
+        message: "Role cannot be empty."
+    }),
+    projectType: z.string({
+        required_error: "Resume project must have some type.",
+    }).min(1, {
+        message : "Type cannot be empty."
+    }),
+    projectStart: z.string().date("Invalid date"),
+    projectEnd: z.union([z.string().date(), z.null()], {
+        required_error: "Resume project end date must either be null or a valid date."
+    }),
+    content: z.object({
+        bullets: z.array(z.string()).min(1, {
+            message: "Cannot be empty."
+        }),
+        references: z.array(ReferenceSchema),
+    }, {
+        required_error: "There must be a valid content entry within a resume project entry."
+    }),
+})
+
+const UpdateResumeProjectSchema = ResumeProjectSchema;
+const NewResumeProjectSchema = ResumeProjectSchema.omit({"id": true});
+
+// and then our operation functions
+export async function submitResumeProject(formData: FormData) : Promise<ResumeProjectStatus> {
+    // validate our inputs
+    let validatedProject;
+    const projectId = formData.get("id");
+
+    if(!projectId) {
+        validatedProject = NewResumeProjectSchema.safeParse({
+            title: formData.get("title"),
+            shortDescription: formData.get("description"),
+            projectRole: formData.get("role"),
+            projectType: formData.get("type"),
+            projectStart: formData.get("start"),
+            projectEnd: formData.get("end") !== "" ? formData.get("end") : null,
+            content: {
+                bullets: JSON.parse(formData.get("bullets") as string),
+                references: JSON.parse(formData.get("references") as string),
+            },
+        });
+    } else {
+        validatedProject = UpdateResumeProjectSchema.safeParse({
+            id: projectId,
+            title: formData.get("title"),
+            shortDescription: formData.get("description"),
+            projectRole: formData.get("role"),
+            projectType: formData.get("type"),
+            projectStart: formData.get("start"),
+            projectEnd: formData.get("end") !== "" ? formData.get("end") : null,
+            content: {
+                bullets: JSON.parse(formData.get("bullets") as string),
+                references: JSON.parse(formData.get("references") as string),
+            },
+        });
+    }
+
+    if(!validatedProject.success) {
+        return {
+            errors: validatedProject.error.flatten().fieldErrors,
+            message: `Failed to create new post. Please fix the errors below.`
+        };
+    }
+
+    // and then attempt to post it to our server and return the expected status
+    // then attempt to communicate with backend to create the post
+    try {
+        const relEndpoint = process.env.BACKEND_API_ROOT! + ((projectId) ? `/resume/project/${projectId}` : "/resume/project/new");
+        const response = await makeLocalRequestWithData(relEndpoint, "POST", false, validatedProject.data, true);
+
+        if(!response.ok)
+            throw response;
+
+        // and revalidate both the post itself and values touched by the blog preview page
+        revalidatePath('/resume')
+        revalidatePath(`/dashboard/resume/projects`);
+        return {
+            message: "Updated resume project.",
+        };
+    } catch (e) {
+        return {
+            errors: {},
+            message: `Unknown error encountered curing ${(projectId)? "updating" : "creation"}. Is the server up?`,
         };
     }
 }

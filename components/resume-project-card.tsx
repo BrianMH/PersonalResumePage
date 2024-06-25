@@ -3,13 +3,20 @@
  * a floating box. This class is encapsulated such that it only requests a single element so that the elements can be
  * independently queried from the back-end (and allow animations).
  */
-import {BookOpenCheckIcon, GithubIcon, GlobeIcon, LinkedinIcon} from "lucide-react";
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip";
 import Link from "next/link";
 import {fetchSingleProjectById} from "@/lib/data";
+import {convertNumericalDateToMM_YY} from "@/lib/helper";
+import ResProjIconSelector from "@/components/extended_ui/resproj-icon-selector";
 
 export default async function ResumeProjectCard({ projectId, className } : { projectId : string, className? : string }) {
     const singleProj = await fetchSingleProjectById(projectId);
+    if(!singleProj)
+        return (<></>);
+
+    // convert our single project's dates
+    singleProj.projectStart = await convertNumericalDateToMM_YY(singleProj.projectStart);
+    singleProj.projectEnd = await convertNumericalDateToMM_YY(singleProj.projectEnd);
 
     if(!singleProj)
         return (<></>);
@@ -21,15 +28,20 @@ export default async function ResumeProjectCard({ projectId, className } : { pro
                 {/*Header portion for the card*/}
                 <div className="bg-accent p-6">
                     <p className="font-light text-sm">
-                        {singleProj.project_type}
+                        {singleProj.projectType}
                     </p>
-                    <p>
-                        <span className="font-bold">{singleProj.project_role}</span> - <span
-                        className="italic">{singleProj.title}</span>
-                    </p>
+                    <div className="flex flex-col-reverse md:flex-row justify-between">
+                        <p>
+                            <span className="font-bold">{singleProj.projectRole}</span> - <span
+                            className="italic">{singleProj.title}</span>
+                        </p>
+                        <p className="text-sm md:text-base font-light">
+                            {singleProj.projectStart} - {singleProj.projectEnd}
+                        </p>
+                    </div>
 
                     <p className="font-thin text-sm italic">
-                        {singleProj.short_description}
+                        {singleProj.shortDescription}
                     </p>
                 </div>
 
@@ -53,22 +65,6 @@ export default async function ResumeProjectCard({ projectId, className } : { pro
                             </div>
 
                             {singleProj.content.references && singleProj.content.references.map(curReference => {
-                                // disambiguate between relevant icons for references
-                                let RelIcon;
-                                switch (curReference.icon) {
-                                    case 'GITHUB_ICON':
-                                        RelIcon = GithubIcon;
-                                        break;
-                                    case 'LINKEDIN_ICON':
-                                        RelIcon = LinkedinIcon;
-                                        break;
-                                    case 'BOOK_ICON':
-                                        RelIcon = BookOpenCheckIcon;
-                                        break;
-                                    default:
-                                        RelIcon = GlobeIcon;
-                                }
-
                                 return (
                                     <TooltipProvider
                                         key={curReference.id}
@@ -79,7 +75,7 @@ export default async function ResumeProjectCard({ projectId, className } : { pro
                                                     href={curReference.href}
                                                     className="flex flex-col justify-center align-middle"
                                                 >
-                                                    <RelIcon className="h-full"/>
+                                                    <ResProjIconSelector iconString={curReference.icon} className="h-full"/>
                                                 </Link>
                                             </TooltipTrigger>
                                             <TooltipContent>

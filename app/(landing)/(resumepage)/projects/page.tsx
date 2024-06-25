@@ -10,7 +10,7 @@ export default async function ProjectsOverviewPage() {
     const relProjsIds = await fetchResumeProjectIds();
 
     return (
-        <div className="pb-1 mr-20 shadow-[inset_0_-2px_0_rgba(0,0,0,0.4)] md:pr-2 overflow-y-scroll">
+        <div className="pb-1 lg:mr-20 md:pr-2">
             {/*Location of the title for the projects list*/}
             <div className="h-fit flex flex-row align-middle justify-center">
                 <div className="w-fit flex flex-col bg-card p-6 text-center shadow-lg mb-6">
@@ -26,7 +26,7 @@ export default async function ProjectsOverviewPage() {
             <div className="space-y-6">
                 {relProjsIds.map(projId => {
                     return (
-                        <ResumeProjectCard key={projId} projectId={projId} className="flex even:flex-row-reverse odd:flex-row"/>
+                        <ResumeProjectCard key={projId} projectId={projId} className="fill-mode-both delay-[100ms] animate-in fade-in-0 ease-in duration-150 flex even:flex-row-reverse odd:flex-row"/>
                     )
                 })}
             </div>
