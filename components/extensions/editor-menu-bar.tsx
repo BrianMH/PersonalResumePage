@@ -6,7 +6,7 @@ import {
     BoldIcon,
     Code2Icon,
     CodeSquareIcon, Heading1Icon, Heading2Icon, Heading3Icon, Heading4Icon, Heading5Icon, Heading6Icon,
-    ItalicIcon,
+    ItalicIcon, LinkIcon,
     ListIcon,
     ListOrderedIcon, MessageSquareQuoteIcon, Redo2Icon, SeparatorHorizontalIcon,
     StrikethroughIcon, Undo2Icon
@@ -14,13 +14,35 @@ import {
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import {Label} from "@/components/ui/label";
 import {Input} from "@/components/ui/input";
-import React from "react";
+import React, {useCallback} from "react";
 
 /**
  * Provides most of the functionality for the post editor.
  */
 export default function MenuBar() {
     const { editor } = useCurrentEditor()
+
+    const setLink = useCallback(() => {
+        const previousUrl = editor!.getAttributes('link').href
+        const url = window.prompt('URL', previousUrl)
+
+        // cancelled
+        if (url === null) {
+            return
+        }
+
+        // empty
+        if (url === '') {
+            editor!.chain().focus().extendMarkRange('link').unsetLink()
+                .run()
+
+            return
+        }
+
+        // update link
+        editor!.chain().focus().extendMarkRange('link').setLink({ href: url })
+            .run()
+    }, [editor])
 
     if (!editor) {
         return null
@@ -72,6 +94,14 @@ export default function MenuBar() {
                 className={`${editor.isActive('strike') ? 'bg-blend-color bg-zinc-300' : ''}`}
             >
                 <StrikethroughIcon className="text-foreground"/>
+            </Button>
+            <Button
+                type="button"
+                variant="outline"
+                onClick={setLink}
+                className={`${editor.isActive('link') ? 'bg-blend-color bg-zinc-300' : ''}`}
+            >
+                <LinkIcon className="text-foreground" />
             </Button>
             <Button
                 type="button"
