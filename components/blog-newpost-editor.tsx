@@ -6,6 +6,7 @@
 import { Color } from '@tiptap/extension-color'
 import ListItem from '@tiptap/extension-list-item'
 import TextStyle from '@tiptap/extension-text-style'
+import { Link as LinkEditorExtension } from '@tiptap/extension-link'
 import {EditorProvider} from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import MenuBar from "@/components/extensions/editor-menu-bar";
@@ -25,7 +26,6 @@ import {useRouter} from "next/navigation";
 import LoadingButton from "@/components/extended_ui/loading-button";
 import {Checkbox} from "@/components/ui/checkbox";
 import {Label} from "@/components/ui/label";
-import {CheckedState} from "@radix-ui/react-checkbox";
 
 /**
  * The extensions used by the relevant editor. This can technically be moved to another file, but since the editor won't
@@ -46,6 +46,10 @@ const extensions = [
     }),
     SectionBlock,
     Figure,
+    LinkEditorExtension.configure({
+        openOnClick : false,
+        linkOnPaste : false,
+    }),
 ]
 
 export default function BlogPostEditor({ defaultImagePath, initialContent, postId, initialTags, initialTitle, isPublished } :
