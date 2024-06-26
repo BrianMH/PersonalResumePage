@@ -31,7 +31,7 @@ import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import ResProjIconSelector from "@/components/extended_ui/resproj-icon-selector";
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip";
 import {KeyboardEvent} from "react";
-import {ResumeProjectStatus, submitResumeProject} from "@/lib/clientDatabaseOps";
+import {deleteResumeProject, ResumeProjectStatus, submitResumeProject} from "@/lib/clientDatabaseOps";
 import {PopoverClose} from "@radix-ui/react-popover";
 
 export default function ResumeProjectUpdateForm({ project, triggerElem } : { project? : Project, triggerElem : ReactNode }) {
@@ -489,9 +489,25 @@ export default function ResumeProjectUpdateForm({ project, triggerElem } : { pro
                             </div>
                         </div>
                     </div>
-                    <DialogFooter>
-                        <Button type="submit">Save changes</Button>
-                    </DialogFooter>
+                    <div className="flex w-full flex-row justify-between sm:space-x-2">
+                        <div>
+                            {
+                                project && project.id && (
+                                    <Button
+                                        variant="destructive"
+                                        type="button"
+                                        onClick={async () => deleteResumeProject(project.id)}
+                                    >
+                                        Delete Project
+                                    </Button>
+                                )
+                            }
+                        </div>
+                        <div className="sm:space-x-2">
+                            <Button type="button" onClick={setOpen.bind(null, false)}>Cancel</Button>
+                            <Button type="submit">Save changes</Button>
+                        </div>
+                    </div>
                 </form>
             </DialogContent>
         </Dialog>

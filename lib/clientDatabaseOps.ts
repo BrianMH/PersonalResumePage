@@ -376,3 +376,20 @@ export async function submitResumeProject(formData: FormData) : Promise<ResumePr
         };
     }
 }
+
+export async function deleteResumeProject(projectId: string) {
+    try {
+        const relEndpoint = process.env.BACKEND_API_ROOT! + `/resume/project/${projectId}`;
+        const response = await makeLocalRequestWithData(relEndpoint, "DELETE", false, null, true);
+
+        if(!response.ok)
+            throw response;
+
+        // and revalidate paths as usual
+        revalidatePath('/resume');
+        revalidatePath('/dashboard/resume/projects');
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
