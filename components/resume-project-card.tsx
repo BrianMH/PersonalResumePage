@@ -8,8 +8,10 @@ import Link from "next/link";
 import {fetchSingleProjectById} from "@/lib/data";
 import {convertNumericalDateToMM_YY} from "@/lib/helper";
 import ResProjIconSelector from "@/components/extended_ui/resproj-icon-selector";
+import {CSSProperties} from "react";
+import {CSSDelayProps} from "@/lib/definitions";
 
-export default async function ResumeProjectCard({ projectId, className } : { projectId : string, className? : string }) {
+export default async function ResumeProjectCard({ projectId, className, style } : { projectId : string, className? : string, style? : CSSDelayProps }) {
     const singleProj = await fetchSingleProjectById(projectId);
     if(!singleProj)
         return (<></>);
@@ -22,7 +24,7 @@ export default async function ResumeProjectCard({ projectId, className } : { pro
         return (<></>);
 
     return (
-        <div className={className}>
+        <div className={className} style={style}>
             <div
                 className="bg-card text-card-foreground min-w-full md:min-w-[60%] w-fit md:max-w-[75%] h-fit shadow-xl">
                 {/*Header portion for the card*/}

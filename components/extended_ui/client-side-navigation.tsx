@@ -26,7 +26,7 @@ export default function ClientSideBreadcrumbs({ basePath, baseName } : { basePat
         ...curPath.split(basePath+"/").at(1)!.split("/").map(curSubpath => {
 
             return {
-                text: curSubpath.at(0)!.toUpperCase() + curSubpath.substring(1),
+                text: curSubpath.split('_').map(curStr => curStr.at(0)!.toUpperCase() + curStr.slice(1)).join(' '),
                 href: curPath.split(curSubpath).at(0) + curSubpath,
             }
         })

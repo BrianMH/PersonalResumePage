@@ -24,9 +24,14 @@ export default async function ProjectsOverviewPage() {
             </div>
 
             <div className="space-y-6">
-                {relProjsIds.map(projId => {
+                {relProjsIds.map((projId, ind) => {
                     return (
-                        <ResumeProjectCard key={projId} projectId={projId} className="fill-mode-both delay-[100ms] animate-in fade-in-0 ease-in duration-150 flex even:flex-row-reverse odd:flex-row"/>
+                        <ResumeProjectCard
+                            key={projId}
+                            projectId={projId}
+                            className="flex even:flex-row-reverse odd:flex-row anim-class"
+                            style={{"--anim-delay" : ind * 0.05}}
+                        />
                     )
                 })}
             </div>

@@ -61,10 +61,15 @@ export async function makeCachedGetRequest(url: string, tagList?: string[], useA
 /**
  * This is where all the database retrievals will happen.
  */
-export async function fetchTechnicalSkills() : Promise<GaugeValue[]> {
+export async function fetchTechnicalSkills(useCache = true) : Promise<GaugeValue[]> {
     try {
         const relEndpoint = process.env.BACKEND_API_ROOT + '/resume/skills/type/technical';
-        const response = await makeCachedGetRequest(relEndpoint, ['resume', 'skill']);
+
+        let response;
+        if(useCache)
+            response = await makeCachedGetRequest(relEndpoint, ['resume', 'skill']);
+        else
+            response = await makeCachedGetRequest(relEndpoint, ['resume', 'skill'], false, 0);
 
         if(!response.ok)
             throw response.status;
@@ -77,10 +82,14 @@ export async function fetchTechnicalSkills() : Promise<GaugeValue[]> {
     }
 }
 
-export async function fetchSoftSkills() : Promise<GaugeValue[]> {
+export async function fetchSoftSkills(useCache = true) : Promise<GaugeValue[]> {
     try {
         const relEndpoint = process.env.BACKEND_API_ROOT + '/resume/skills/type/soft';
-        const response = await makeCachedGetRequest(relEndpoint, ['resume', 'skill']);
+        let response;
+        if(useCache)
+            response = await makeCachedGetRequest(relEndpoint, ['resume', 'skill']);
+        else
+            response = await makeCachedGetRequest(relEndpoint, ['resume', 'skill'], false, 0);
 
         if(!response.ok)
             throw response.status;

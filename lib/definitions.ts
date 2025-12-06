@@ -2,6 +2,8 @@
  * Holds our data types that would eventually be extracted from the server
  */
 
+import {CSSProperties} from "react";
+
 /**
  * A representation of a "scale" that's used to measure the knowledge associated with a given technical or
  * soft skill
@@ -126,4 +128,11 @@ export type ServerStatusResponse = {
     success: boolean,
     statusCode: number,
     message: string,
+}
+
+/*
+Used for any CSS that requires custom animation delay
+ */
+export interface CSSDelayProps extends CSSProperties {
+    '--anim-delay': number;
 }

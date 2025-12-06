@@ -19,7 +19,11 @@ export default function ResumeConfigurationPage() {
                 <CardContent>
                 </CardContent>
                 <CardFooter className="border-t px-6 py-4">
-                    <Button>Open</Button>
+                    <Link
+                        href={"/dashboard/resume/technical_skills"}
+                    >
+                        <Button>Open</Button>
+                    </Link>
                 </CardFooter>
             </Card>
             <Card>
@@ -32,7 +36,11 @@ export default function ResumeConfigurationPage() {
                 <CardContent>
                 </CardContent>
                 <CardFooter className="border-t px-6 py-4">
-                    <Button>Open</Button>
+                    <Link
+                        href={"/dashboard/resume/soft_skills"}
+                    >
+                        <Button>Open</Button>
+                    </Link>
                 </CardFooter>
             </Card>
             <Card>

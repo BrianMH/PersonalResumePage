@@ -4,6 +4,8 @@
 
 @layer base {
   :root {
+    --anim-delay: 0;   /* base delay for animation transition */
+
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
 
@@ -77,4 +79,27 @@
   }
 }
 
+/*
+Used to set the hidden properties in such a way to allow for easier manipulation.
+ */
 [hidden] { display: none !important; }
+
+/*
+  Implements the animation for the boxes such that they are individually delayed
+*/
+.anim-class {
+  opacity: 0;
+  animation: fade-in-animation 1s;
+  animation-fill-mode: forwards;
+  animation-delay: calc(var(--anim-delay) * 1s);
+}
+
+@keyframes fade-in-animation {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}

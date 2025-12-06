@@ -14,13 +14,17 @@ export default async function Page() {
 
     // and then render the view on the server-end
     return (
-        <div className="flex-1">
-            <div className="flex flex-row flex-wrap pt-3 gap-6">
+        <div className="flex-1 flex flex-col">
+            <div className="px-3 -mt-1 w-full h-fit font-light text-sm">
+                Select a project to make changes to it.
+            </div>
+
+            <div className="flex-1 flex flex-col pt-3 gap-6">
                 {/*Pre-defined projects*/}
-                <div className="flex flex-row align-middle justify-center gap-6">
+                <div className="flex flex-row align-middle gap-6">
                     {relProjsIds.map(async (projId) => {
                         const fetchedProj = await fetchSingleProjectById(projId)
-                        if(!fetchedProj)
+                        if (!fetchedProj)
                             return null;
 
                         return (
@@ -37,24 +41,34 @@ export default async function Page() {
                             />
                         )
                     })}
-                </div>
 
-                {/*And now the new project*/}
-                <ResumeProjectUpdateForm
-                    triggerElem={(
-                        <button
-                            className="flex flex-col align-middle justify-center"
-                        >
-                            <div className="w-32 h-32 border bg-card shadow-sm rounded-lg hover:bg-gray-100">
-                                <div className="flex flex-row justify-center align-middle w-full h-full">
-                                    <div className="flex flex-col justify-center align-middle h-full">
-                                        <CirclePlus className="w-9 h-9"/>
+                    {/*And now the new project*/}
+                    <ResumeProjectUpdateForm
+                        triggerElem={(
+                            <button
+                                className="flex flex-col align-middle justify-center"
+                            >
+                                <div className="w-32 h-32 border bg-card shadow-sm rounded-lg hover:bg-gray-100">
+                                    <div className="flex flex-row justify-center align-middle w-full h-full">
+                                        <div className="flex flex-col justify-center align-middle h-full">
+                                            <CirclePlus className="w-9 h-9"/>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </button>
-                    )}
-                />
+                            </button>
+                        )}
+                    />
+                </div>
+            </div>
+
+            <div className="flex flex-row justify-around">
+                <Link
+                    href={"/dashboard/resume"}
+                >
+                    <Button type="button">
+                        Back
+                    </Button>
+                </Link>
             </div>
         </div>
     )
