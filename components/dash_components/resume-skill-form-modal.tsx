@@ -18,7 +18,8 @@ export default function ResumeSkillUpdateForm({ skill, triggerElem } : { skill? 
     const [open, setOpen] = useState<boolean>(false);
     const setOpenDecorated = function(newState: boolean) {
         if(open && !newState) {
-            setFormState(initialState);
+            // TODO: Commented. Used in the options section for updating a specific skill?
+            // setFormState(initialState);
         }
 
         setOpen(newState);
