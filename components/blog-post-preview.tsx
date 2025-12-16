@@ -32,13 +32,15 @@ export default async function BlogPostCard( { blogId } : { blogId : string }) {
         throw new Error("Post not found!");
 
     // and create our deletion functor
-    async function postDeleteAction(postId: string) {
+    async function postDeleteAction(postId: string, formData: FormData) {
         'use server';
 
         // first attempt deletion
         const deletionResponse = await deletePostById(postId);
 
-        return deletionResponse.success;
+        // TODO: Modified deletion structure. This shouldn't be returned anywhere, but it needs analysis
+
+        return
     }
     const dispatch = postDeleteAction.bind(null, blogId);
 
