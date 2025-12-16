@@ -43,7 +43,11 @@ export default function TagAdminNavigator({ tagsWithColors } : { tagsWithColors 
             duration: 2000,
         })
 
-        return deletionResponse.success;
+        // TODO: This was also returned due to most recent patch change. Investigate whether this disrupts the chain
+        //       somehow (it shouldn't. seems like it only determined whether the return would be processed or not)
+        // return deletionResponse.success;
+
+        return
     }
 
     return (
